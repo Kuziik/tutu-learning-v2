@@ -1,0 +1,2669 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Продуктовое мышление — курс для команды Туту</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;1,6..12,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    /* ══ DESIGN TOKENS (cloned from tutu.ru, June 2026) ═══════════════════════ */
+    :root {
+      --font-base: 'Nunito Sans', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+
+      /* Brand */
+      --c-primary:      #7D71FF;   /* Berry Purple — все CTAs курса */
+      --c-primary-dark: #6558e0;
+      --c-primary-bg:   #f5f3ff;
+      --c-deep:         #0D0B68;   /* Dark backgrounds */
+      --c-green:        #00C95E;
+      --c-orange:       #FF872E;
+      --c-blue:         #5F94FF;
+      --c-lilac:        #BA61FF;
+
+      /* Text */
+      --c-text:         #1a1a1a;   /* body copy */
+      --c-text-2:       #727272;   /* secondary */
+      --c-text-3:       #9e9e9e;   /* muted */
+      --c-text-inv:     #ffffff;
+
+      /* Surfaces */
+      --c-bg:           #ffffff;
+      --c-bg-subtle:    #f9f9f9;
+      --c-bg-brand:     #f5f3ff;
+      --c-border:       #e5e5e5;
+
+      /* Feedback */
+      --c-success:      #00C95E;
+      --c-warn:         #FF872E;
+      --c-error:        #e53935;
+
+      /* Radius */
+      --r-xs:  4px;
+      --r-sm:  6px;
+      --r-md:  8px;
+      --r-lg:  12px;
+      --r-xl:  16px;
+      --r-pill:50px;
+
+      /* Shadow */
+      --sh-xs:  0 1px 3px rgba(0,0,0,.08);
+      --sh-sm:  0 2px 8px rgba(0,0,0,.08);
+      --sh-md:  0 4px 16px rgba(0,0,0,.10);
+      --sh-lg:  0 8px 32px rgba(0,0,0,.12);
+      --sh-card:0 2px 8px rgba(0,0,0,.06);
+
+      /* Transitions */
+      --t-fast: 0.15s ease;
+      --t-base: 0.22s ease;
+    }
+
+    /* ══ RESET ═════════════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--font-base);
+      font-size: 16px;
+      color: var(--c-text);
+      background: var(--c-bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+
+    /* ══ LAYOUT ════════════════════════════════════════════════════════════════ */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 64px 0; }
+
+    /* ══ TYPOGRAPHY ════════════════════════════════════════════════════════════ */
+    .eyebrow {
+      font-size: 12px; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--c-primary); margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: clamp(22px, 3vw, 30px); font-weight: 800;
+      line-height: 1.22; color: var(--c-text); margin-bottom: 12px;
+    }
+    .section-sub {
+      font-size: 16px; color: var(--c-text-2); line-height: 1.7;
+      max-width: 560px;
+    }
+    .text-center { text-align: center; }
+    .text-center .section-sub { margin: 0 auto; }
+
+    /* ══ BUTTONS (tutu.ru spec) ════════════════════════════════════════════════ */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      font-family: inherit; font-weight: 700; border: none;
+      border-radius: var(--r-md); cursor: pointer; text-decoration: none;
+      white-space: nowrap; transition: background var(--t-fast), color var(--t-fast), box-shadow var(--t-fast);
+      line-height: 1;
+    }
+    .btn:focus-visible { outline: 3px solid var(--c-primary); outline-offset: 2px; }
+
+    /* Sizes */
+    .btn-lg { height: 46px; padding: 0 28px; font-size: 16px; }
+    .btn-md { height: 38px; padding: 0 20px; font-size: 15px; }
+    .btn-sm { height: 32px; padding: 0 14px; font-size: 13px; border-radius: var(--r-sm); }
+
+    /* Variants */
+    .btn-primary   { background: var(--c-primary); color: #fff; }
+    .btn-primary:hover { background: var(--c-primary-dark); }
+
+    .btn-white     { background: #fff; color: var(--c-primary); }
+    .btn-white:hover { background: #f0eeff; }
+
+    .btn-ghost     { background: transparent; border: 1.5px solid rgba(255,255,255,.55); color: #fff; }
+    .btn-ghost:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.8); }
+
+    .btn-outline   { background: transparent; border: 1.5px solid var(--c-border); color: var(--c-text); }
+    .btn-outline:hover { background: var(--c-bg-subtle); }
+
+    /* ══ HEADER ════════════════════════════════════════════════════════════════ */
+    .b-header {
+      position: sticky; top: 0; z-index: 200;
+      height: 60px; background: var(--c-bg);
+      border-bottom: 1px solid var(--c-border);
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
+    }
+    .b-header__inner {
+      height: 100%; display: flex; align-items: center;
+      justify-content: space-between; gap: 24px;
+    }
+    .b-header__logo {
+      display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0;
+    }
+    .b-header__logo-img { height: 24px; width: auto; display: block; }
+    .b-header__logo-sep {
+      width: 1px; height: 20px; background: var(--c-border); flex-shrink: 0;
+    }
+    .b-header__logo-label {
+      font-size: 14px; font-weight: 700; color: var(--c-text);
+      letter-spacing: -.2px;
+    }
+    .b-header__logo-label em { color: var(--c-primary); font-style: normal; }
+
+    .b-header__nav { display: flex; align-items: center; gap: 2px; }
+    .b-header__nav-link {
+      padding: 7px 12px; border-radius: var(--r-md); font-size: 14px; font-weight: 600;
+      color: var(--c-text-2); text-decoration: none;
+      transition: color var(--t-fast), background var(--t-fast);
+    }
+    .b-header__nav-link:hover { color: var(--c-text); background: var(--c-bg-subtle); }
+    .b-header__nav-link.active { color: var(--c-primary); }
+
+    /* ══ HERO ══════════════════════════════════════════════════════════════════ */
+    .b-hero {
+      background: linear-gradient(135deg, #0D0B68 0%, #2a1f8f 40%, #7D71FF 100%);
+      padding: 80px 0 72px; color: #fff; overflow: hidden; position: relative;
+    }
+    .b-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(125,113,255,.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .b-hero__inner { position: relative; text-align: center; }
+    .b-hero__badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,.15); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: var(--r-pill); padding: 5px 16px;
+      font-size: 13px; font-weight: 600; color: rgba(255,255,255,.9);
+      margin-bottom: 24px;
+    }
+    .b-hero__logo-wrap {
+      display: flex; justify-content: center; align-items: center; gap: 10px;
+      margin-bottom: 32px;
+    }
+    .b-hero__logo-img { height: 32px; filter: brightness(0) invert(1); }
+    .b-hero__title {
+      font-size: clamp(30px, 5vw, 52px); font-weight: 800; line-height: 1.15;
+      margin-bottom: 20px; letter-spacing: -.5px;
+    }
+    .b-hero__title .accent { color: #A6C2FF; }
+    .b-hero__sub {
+      font-size: 18px; line-height: 1.65; color: rgba(255,255,255,.85);
+      max-width: 540px; margin: 0 auto 36px;
+    }
+    .b-hero__btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .b-hero__stats {
+      display: flex; justify-content: center; gap: 56px; flex-wrap: wrap;
+      margin-top: 56px; padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,.15);
+    }
+    .b-hero__stat { text-align: center; }
+    .b-hero__stat-num { font-size: 36px; font-weight: 800; line-height: 1; display: block; }
+    .b-hero__stat-label { font-size: 13px; color: rgba(255,255,255,.7); margin-top: 4px; }
+
+    /* ══ LEVELS ════════════════════════════════════════════════════════════════ */
+    .b-levels { background: var(--c-bg-subtle); }
+    .b-levels__grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px;
+    }
+    .level-card {
+      background: var(--c-bg); border: 1px solid var(--c-border);
+      border-radius: var(--r-xl); padding: 28px 24px;
+      text-decoration: none; color: inherit; display: block;
+      position: relative; overflow: hidden;
+      transition: transform var(--t-base), box-shadow var(--t-base);
+    }
+    .level-card:hover { transform: translateY(-4px); box-shadow: var(--sh-lg); }
+    .level-card:focus-visible { outline: 3px solid var(--c-primary); outline-offset: 2px; }
+    /* color top stripe */
+    .level-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      border-radius: var(--r-xl) var(--r-xl) 0 0;
+    }
+    .level-card.easy::before   { background: var(--c-green); }
+    .level-card.medium::before { background: var(--c-warn); }
+    .level-card.hard::before   { background: #e53935; }
+
+    .level-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: var(--r-pill);
+      font-size: 12px; font-weight: 700; margin-bottom: 14px;
+    }
+    .level-badge.easy   { background: #e8f5e9; color: #2e7d32; }
+    .level-badge.medium { background: #fff3e0; color: #bf360c; }
+    .level-badge.hard   { background: #ffebee; color: #b71c1c; }
+
+    .level-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; color: var(--c-text); }
+    .level-card p  { font-size: 14px; color: var(--c-text-2); line-height: 1.65; margin-bottom: 16px; }
+    .level-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .level-tag {
+      background: var(--c-bg-subtle); border: 1px solid var(--c-border);
+      color: var(--c-text-2); padding: 3px 9px; border-radius: var(--r-xs);
+      font-size: 12px; font-weight: 600;
+    }
+    .level-meta { display: flex; flex-direction: column; gap: 4px; }
+    .level-meta span { font-size: 13px; color: var(--c-text-2); display: flex; align-items: center; gap: 5px; }
+    .level-progress {
+      height: 3px; background: var(--c-border); border-radius: var(--r-pill);
+      overflow: hidden; margin-top: 14px;
+    }
+    .level-progress__fill {
+      height: 100%; border-radius: var(--r-pill); transition: width 1.2s ease; width: 0;
+    }
+    .easy   .level-progress__fill { background: var(--c-green); }
+    .medium .level-progress__fill { background: var(--c-warn); }
+    .hard   .level-progress__fill { background: #e53935; }
+
+    /* ══ HOW IT WORKS ══════════════════════════════════════════════════════════ */
+    .b-how { background: var(--c-bg); }
+    .b-how__steps {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+      margin-top: 48px; position: relative;
+    }
+    .b-how__steps::before {
+      content: ''; position: absolute;
+      top: 23px; left: 11%; right: 11%;
+      height: 2px;
+      background: linear-gradient(to right, var(--c-primary), rgba(125,113,255,.2));
+      z-index: 0;
+    }
+    .how-step { text-align: center; position: relative; z-index: 1; }
+    .how-step__num {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--c-primary); color: #fff;
+      font-size: 18px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px; box-shadow: 0 4px 14px rgba(125,113,255,.35);
+    }
+    .how-step h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: var(--c-text); }
+    .how-step p  { font-size: 13px; color: var(--c-text-2); line-height: 1.6; }
+
+    /* ══ CURRICULUM ════════════════════════════════════════════════════════════ */
+    .b-curriculum { background: var(--c-bg-subtle); }
+    .curriculum-tabs {
+      display: flex; gap: 3px; margin: 32px 0 20px;
+      background: var(--c-border); padding: 4px; border-radius: var(--r-md);
+      width: fit-content;
+    }
+    .tab-btn {
+      padding: 8px 20px; border-radius: var(--r-sm);
+      border: none; background: transparent;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: all var(--t-fast); color: var(--c-text-2);
+      font-family: inherit;
+    }
+    .tab-btn.active {
+      background: var(--c-bg); color: var(--c-text);
+      box-shadow: var(--sh-xs);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* detective toggle row */
+    .det-toggle-row {
+      display: flex; align-items: center; justify-content: flex-end;
+      gap: 10px; padding: 8px 0 4px;
+    }
+    .det-toggle-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 18px; border-radius: var(--r-pill); font-size: 13px;
+      font-weight: 700; cursor: pointer; transition: all var(--t-fast);
+      border: 1.5px solid var(--c-primary); background: transparent;
+      color: var(--c-primary); font-family: inherit;
+    }
+    .det-toggle-btn:hover,
+    .det-toggle-btn.active { background: var(--c-primary); color: #fff; }
+
+    /* detective bar */
+    .det-mode-bar {
+      background: linear-gradient(135deg, #0D0B68 0%, #1c155a 100%);
+      color: #fff; padding: 10px 0; text-align: center;
+      position: sticky; top: 60px; z-index: 90;
+      border-bottom: 2px solid var(--c-primary);
+      display: none; font-size: 13px; font-weight: 600;
+    }
+    .det-mode-bar.active { display: block; }
+
+    /* ── modules list ── */
+    .modules-list { display: flex; flex-direction: column; gap: 8px; }
+    .module-item {
+      background: var(--c-bg); border: 1px solid var(--c-border);
+      border-radius: var(--r-md); overflow: hidden;
+      transition: box-shadow var(--t-fast);
+    }
+    .module-item:hover { box-shadow: var(--sh-xs); }
+    .module-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 20px; cursor: pointer;
+      transition: background var(--t-fast); user-select: none;
+    }
+    .module-header:hover { background: var(--c-bg-subtle); }
+    .module-num {
+      width: 32px; height: 32px; border-radius: var(--r-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; flex-shrink: 0;
+    }
+    .module-num.easy   { background: #e8f5e9; color: #2e7d32; }
+    .module-num.medium { background: #fff3e0; color: #bf360c; }
+    .module-num.hard   { background: #ffebee; color: #b71c1c; }
+
+    .module-title   { font-weight: 700; font-size: 14px; flex: 1; color: var(--c-text); }
+    .module-dur     { font-size: 12px; color: var(--c-text-3); flex-shrink: 0; }
+    .module-arrow   {
+      font-size: 11px; color: var(--c-text-3);
+      transition: transform var(--t-fast); flex-shrink: 0;
+    }
+    .module-item.open .module-arrow { transform: rotate(90deg); }
+
+    .module-body {
+      display: none; padding: 4px 20px 20px 64px;
+      font-size: 14px; color: var(--c-text-2); line-height: 1.7;
+    }
+    .module-item.open .module-body { display: block; }
+
+    /* ── module body components ── */
+    .module-hook {
+      font-style: italic; color: var(--c-text-2);
+      border-left: 3px solid var(--c-primary);
+      padding-left: 14px; margin-bottom: 18px;
+      font-size: 15px; line-height: 1.6;
+    }
+    .module-body h4 {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--c-primary); margin: 18px 0 8px;
+    }
+    .lesson-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .lesson-list li { display: flex; align-items: baseline; gap: 6px; }
+    .lesson-list li::before { content: "▸"; color: var(--c-primary); flex-shrink: 0; font-size: 12px; }
+
+    .module-body > p {
+      font-size: 14px; color: var(--c-text-2); line-height: 1.7; margin: 8px 0;
+    }
+
+    .module-case {
+      background: rgba(125,113,255,.06); border: 1px solid rgba(125,113,255,.18);
+      border-radius: var(--r-lg); padding: 16px 18px; margin: 16px 0;
+    }
+    .module-case-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .09em; color: var(--c-primary); margin-bottom: 8px;
+    }
+    .module-case p { font-size: 14px; color: var(--c-text); line-height: 1.65; margin: 0; }
+
+    .module-takeaway {
+      background: rgba(255,135,46,.07); border: 1px solid rgba(255,135,46,.22);
+      border-radius: var(--r-lg); padding: 14px 18px; margin-top: 16px;
+      font-size: 14px; color: var(--c-text); line-height: 1.6;
+    }
+
+    /* ══ DETECTIVE MODE — Sherlock Holmes immersive style ══════════════════════ */
+    /*
+     * Визуальный язык: Лондон 1890-х. Пергамент, дерево красного дерева, сургуч,
+     * чернила, газетные вырезки, рукописные заметки. Никакого синего.
+     * Палитра: #2c1a0e (тёмное дерево), #f5e6c8 (пергамент), #8b1a1a (сургуч),
+     *          #1a3a1a (чернила), #c8960c (старое золото/воск), #4a3728 (кофе/тень)
+     */
+
+    /* шрифтовые переменные детектива */
+    :root {
+      --det-font-title: 'IM Fell English', Georgia, serif;
+      --det-font-body:  'Special Elite', 'Courier New', monospace;
+      --det-parchment:  #f5e6c8;
+      --det-parchment-dark: #e8d4a8;
+      --det-ink:        #1e140a;
+      --det-ink-2:      #3d2b1a;
+      --det-ink-faded:  #6b4c2e;
+      --det-sealing:    #8b1a1a;  /* сургуч */
+      --det-gold:       #c8960c;  /* воск/золото */
+      --det-wood:       #2c1a0e;  /* красное дерево */
+      --det-wood-light: #4a3728;
+      --det-green:      #2d4a1e;  /* бутылочное стекло */
+      --det-paper-line: rgba(30,20,10,.12);
+    }
+
+    .det-story { display: none; margin-top: 20px; }
+    body.detective-on .det-story { display: block; }
+    body.detective-on .module-hook,
+    body.detective-on .module-body > h4,
+    body.detective-on .module-body > ul,
+    body.detective-on .module-body > p,
+    body.detective-on .module-case,
+    body.detective-on .module-takeaway { display: none; }
+    body.detective-on .module-item.open .module-body { display: block; }
+
+    /* ── Обёртка дела — стол детектива ── */
+    .det-story {
+      background:
+        /* зернистость пергамента */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
+        linear-gradient(170deg, #f0d99a 0%, #e8cf8a 30%, #f2dfa0 60%, #dcc678 100%);
+      border-radius: 4px;
+      border: 2px solid #b8962a;
+      box-shadow:
+        0 0 0 4px #e8cf8a,
+        0 0 0 5px #b8962a,
+        0 6px 28px rgba(44,26,14,.4),
+        inset 0 1px 0 rgba(255,255,255,.35);
+      padding: 0;
+      margin-top: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* шапка дела — деревянная доска */
+    .det-story::before {
+      content: '';
+      display: block;
+      height: 8px;
+      background: linear-gradient(90deg, #2c1a0e, #4a3728 30%, #2c1a0e 60%, #3d2616 100%);
+      border-bottom: 1px solid #1a0e06;
+    }
+
+    /* внутренний контейнер */
+    .det-inner {
+      padding: 24px 28px 20px;
+      /* линии тетради под пергамент */
+      background-image: repeating-linear-gradient(
+        transparent, transparent 27px, var(--det-paper-line) 27px, var(--det-paper-line) 28px
+      );
+      background-position: 0 40px;
+    }
+
+    /* ── Заголовок расследования ── */
+    .det-case-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 20px; padding-bottom: 14px;
+      border-bottom: 2px solid rgba(44,26,14,.2);
+    }
+    .det-case-num {
+      font-family: var(--det-font-title);
+      font-size: 11px; font-style: italic;
+      color: var(--det-ink-faded);
+      letter-spacing: .05em;
+    }
+    .det-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--det-sealing);
+      color: #f5e6c8;
+      font-family: var(--det-font-body);
+      font-size: 12px; font-weight: normal; letter-spacing: .08em;
+      text-transform: uppercase; padding: 4px 14px;
+      border-radius: 2px;
+      box-shadow: 0 2px 6px rgba(139,26,26,.35), inset 0 1px 0 rgba(255,255,255,.15);
+      position: relative;
+    }
+    /* сургучная печать — кружок */
+    .det-badge::before {
+      content: '🔍';
+      font-size: 14px; margin-right: 4px;
+    }
+
+    /* ── Нарратив — рукопись на пергаменте ── */
+    .det-scene {
+      background: rgba(255,250,235,.6);
+      border: 1px solid rgba(44,26,14,.15);
+      border-left: 4px solid var(--det-sealing);
+      border-radius: 0 3px 3px 0;
+      padding: 16px 18px; margin-bottom: 18px;
+      box-shadow: inset 0 1px 4px rgba(44,26,14,.06);
+    }
+    .det-scene-label {
+      font-family: var(--det-font-body);
+      font-size: 11px; color: var(--det-sealing);
+      text-transform: uppercase; letter-spacing: .1em;
+      margin-bottom: 10px; display: block;
+    }
+    .det-narrative p {
+      font-family: var(--det-font-body);
+      font-size: 14px; color: var(--det-ink); line-height: 1.85;
+      margin: 0 0 10px;
+    }
+    .det-narrative p:last-child { margin-bottom: 0; }
+    .det-narrative em {
+      display: block;
+      font-family: var(--det-font-title);
+      font-style: italic;
+      color: var(--det-ink-2);
+      font-size: 14px; line-height: 1.7;
+      margin: 6px 0 10px 16px;
+      padding: 6px 14px;
+      background: rgba(44,26,14,.04);
+      border-left: 2px solid var(--det-gold);
+    }
+
+    /* ── Доска улик — газетная вырезка ── */
+    .det-clues {
+      background: #fafafa;
+      border: 1px solid rgba(44,26,14,.2);
+      border-top: 3px solid var(--det-ink);
+      border-radius: 0 0 3px 3px;
+      padding: 14px 18px; margin-bottom: 18px;
+      box-shadow: 2px 3px 0 rgba(44,26,14,.12);
+      position: relative;
+    }
+    .det-clues::before {
+      /* имитация скотча сверху */
+      content: '';
+      position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+      width: 80px; height: 10px;
+      background: rgba(200,150,12,.35);
+      border-radius: 1px;
+    }
+    .det-clue-label {
+      font-family: var(--det-font-body);
+      font-size: 11px; font-weight: normal;
+      color: var(--det-ink);
+      text-transform: uppercase; letter-spacing: .1em;
+      margin-bottom: 10px; display: block;
+      border-bottom: 1px solid rgba(44,26,14,.15);
+      padding-bottom: 6px;
+    }
+    .det-clues ul {
+      list-style: none; padding: 0;
+      display: flex; flex-direction: column; gap: 7px;
+    }
+    .det-clues li {
+      font-family: var(--det-font-body);
+      font-size: 13px; color: var(--det-ink-2);
+      line-height: 1.55; display: flex; align-items: baseline; gap: 8px;
+    }
+    .det-clues li::before {
+      content: '▪';
+      color: var(--det-sealing); flex-shrink: 0; font-size: 10px;
+    }
+
+    /* ── Вопрос следователя ── */
+    .det-choices { margin-bottom: 16px; }
+    .det-choice-label {
+      font-family: var(--det-font-title);
+      font-style: italic;
+      font-size: 15px; color: var(--det-ink);
+      margin-bottom: 14px; display: block;
+      line-height: 1.5;
+    }
+    .det-choice-label::before {
+      content: '❓ ';
+    }
+
+    /* кнопки — конверты/карточки */
+    .det-btn {
+      display: block; width: 100%; text-align: left;
+      padding: 13px 18px; margin-bottom: 10px;
+      border-radius: 3px;
+      border: 1px solid rgba(44,26,14,.25);
+      background: linear-gradient(135deg, #fffef8 0%, #f7f0dc 100%);
+      color: var(--det-ink-2);
+      font-family: var(--det-font-body);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .18s ease;
+      line-height: 1.55;
+      box-shadow: 1px 2px 0 rgba(44,26,14,.1);
+      position: relative;
+    }
+    /* буква варианта */
+    .det-btn::before {
+      content: attr(data-letter);
+      position: absolute; left: -1px; top: -1px;
+      width: 28px; height: 28px;
+      background: var(--det-wood);
+      color: var(--det-parchment);
+      font-family: var(--det-font-title);
+      font-size: 13px; font-style: italic;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 3px 0 3px 0;
+    }
+    /* отступ для буквы */
+    .det-btn { padding-left: 44px; }
+
+    .det-btn:hover {
+      background: linear-gradient(135deg, #fff9e8 0%, #f2e4be 100%);
+      border-color: var(--det-gold);
+      box-shadow: 2px 3px 0 rgba(44,26,14,.18);
+      transform: translateY(-1px);
+    }
+
+    .det-btn.chosen-right {
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      border-color: #388e3c;
+      color: #1b5e20;
+      pointer-events: none;
+    }
+    .det-btn.chosen-right::before { background: #2e7d32; }
+
+    .det-btn.chosen-partial {
+      background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+      border-color: #f9a825;
+      color: #5d4037;
+      pointer-events: none;
+    }
+    .det-btn.chosen-partial::before { background: #f57f17; }
+
+    .det-btn.chosen-wrong {
+      background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+      border-color: #c62828;
+      color: #6d1a1a;
+      pointer-events: none;
+      opacity: .75;
+    }
+    .det-btn.chosen-wrong::before { background: #b71c1c; }
+
+    .det-btn.disabled { pointer-events: none; opacity: .3; }
+
+    /* ── Вердикт — телеграмма ── */
+    .det-reveal { margin-top: 16px; }
+
+    .det-result-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--det-font-body);
+      font-size: 11px; font-weight: normal;
+      padding: 4px 12px; border-radius: 2px;
+      margin-bottom: 10px; letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+    .det-result-badge.right   {
+      background: #2e7d32; color: #e8f5e9;
+      box-shadow: 0 2px 4px rgba(46,125,50,.3);
+    }
+    .det-result-badge.partial {
+      background: #e65100; color: #fff8e1;
+      box-shadow: 0 2px 4px rgba(230,81,0,.3);
+    }
+    .det-result-badge.wrong   {
+      background: var(--det-sealing); color: #fce4ec;
+      box-shadow: 0 2px 4px rgba(139,26,26,.3);
+    }
+
+    /* телеграмма-продолжение */
+    .det-story-continue {
+      background: #fffef5;
+      border: 1px dashed rgba(44,26,14,.25);
+      border-radius: 3px;
+      padding: 16px 18px;
+      position: relative;
+    }
+    .det-story-continue::before {
+      content: 'ДОНЕСЕНИЕ СЛЕДОВАТЕЛЯ';
+      display: block;
+      font-family: var(--det-font-body);
+      font-size: 10px; letter-spacing: .15em;
+      color: var(--det-ink-faded);
+      text-align: center;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(44,26,14,.15);
+    }
+    .det-story-continue p {
+      font-family: var(--det-font-body);
+      font-size: 13px; color: var(--det-ink); line-height: 1.8;
+      margin: 0 0 10px;
+    }
+    .det-story-continue p:last-child { margin-bottom: 0; }
+    .det-story-continue em {
+      display: block;
+      font-family: var(--det-font-title);
+      font-style: italic;
+      color: var(--det-ink-2);
+      font-size: 14px; line-height: 1.7;
+      margin: 4px 0 10px 12px;
+      border-left: 2px solid var(--det-gold);
+      padding-left: 12px;
+    }
+
+    /* мораль — сургучная печать внизу */
+    .det-story-continue p.det-moral {
+      margin-top: 16px; padding: 14px 18px;
+      background: linear-gradient(135deg, #2c1a0e 0%, #3d2616 100%);
+      color: var(--det-parchment);
+      font-family: var(--det-font-title);
+      font-style: italic;
+      font-size: 14px; line-height: 1.65;
+      border-radius: 3px;
+      box-shadow: 0 3px 10px rgba(44,26,14,.35);
+    }
+    .det-story-continue p.det-moral::before {
+      content: '🕯 ';
+    }
+
+    /* ── детектив-бар сверху ── */
+    .det-mode-bar {
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='4'%3E%3Crect width='100' height='4' fill='%23b8962a'/%3E%3Crect width='50' height='4' fill='%232c1a0e' opacity='0.3'/%3E%3C/svg%3E"),
+        linear-gradient(90deg, #2c1a0e 0%, #3d2616 40%, #2c1a0e 70%, #1a0e06 100%);
+      color: var(--det-parchment);
+      font-family: var(--det-font-body);
+      font-size: 13px; letter-spacing: .05em;
+      padding: 9px 0; text-align: center;
+      position: sticky; top: 60px; z-index: 90;
+      border-bottom: 2px solid var(--det-gold);
+      display: none;
+    }
+    .det-mode-bar.active { display: block; }
+
+    /* ── кнопка-тоггл детектива ── */
+    .det-toggle-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 20px; border-radius: 3px;
+      font-family: var(--det-font-body);
+      font-size: 13px; letter-spacing: .04em;
+      cursor: pointer; transition: all .18s ease;
+      border: 1.5px solid var(--det-ink-faded);
+      background: linear-gradient(135deg, #fffef8 0%, #f0e0b0 100%);
+      color: var(--det-ink);
+    }
+    .det-toggle-btn:hover,
+    .det-toggle-btn.active {
+      background: linear-gradient(135deg, #2c1a0e 0%, #3d2616 100%);
+      border-color: var(--det-gold);
+      color: var(--det-parchment);
+      box-shadow: 0 3px 10px rgba(44,26,14,.3);
+    }
+
+    /* ══ OODA SECTION ══════════════════════════════════════════════════════════ */
+    .b-ooda { background: var(--c-deep); color: #fff; }
+    .b-ooda .eyebrow { color: #A6C2FF; }
+    .b-ooda .section-title { color: #fff; }
+    .b-ooda .section-sub { color: rgba(255,255,255,.65); }
+    .ooda-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; margin-top: 44px;
+    }
+    .ooda-card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.09);
+      border-radius: var(--r-xl); padding: 24px;
+      transition: background var(--t-base);
+    }
+    .ooda-card:hover { background: rgba(255,255,255,.09); }
+    .ooda-letter { font-size: 48px; font-weight: 800; color: var(--c-primary); line-height: 1; margin-bottom: 8px; }
+    .ooda-card h4 { color: #fff; font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .ooda-card p  { font-size: 13px; color: rgba(255,255,255,.6); line-height: 1.65; }
+
+    /* ══ REVIEWS ═══════════════════════════════════════════════════════════════ */
+    .b-reviews { background: var(--c-bg); }
+    .reviews-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px;
+    }
+    .review-card {
+      background: var(--c-bg-subtle); border: 1px solid var(--c-border);
+      border-radius: var(--r-xl); padding: 24px; box-shadow: var(--sh-card);
+      transition: transform var(--t-base), box-shadow var(--t-base);
+    }
+    .review-card:hover { transform: translateY(-3px); box-shadow: var(--sh-md); }
+    .review-stars { color: var(--c-primary); font-size: 14px; margin-bottom: 12px; letter-spacing: 1px; }
+    .review-card > p { font-size: 14px; color: var(--c-text); line-height: 1.7; margin-bottom: 16px; font-style: italic; }
+    .review-author { display: flex; align-items: center; gap: 10px; }
+    .review-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--c-primary); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; flex-shrink: 0;
+    }
+    .review-name { font-weight: 700; font-size: 13px; color: var(--c-text); }
+    .review-role { font-size: 12px; color: var(--c-text-3); }
+
+    /* ══ HACKATHON / API ═══════════════════════════════════════════════════════ */
+    .b-hackathon { background: var(--c-bg-subtle); }
+
+    /* API setup card */
+    .hack-api-wrap { display: flex; justify-content: center; margin-top: 44px; }
+    .hack-api-card {
+      background: var(--c-bg); border: 2px dashed var(--c-primary);
+      border-radius: var(--r-xl); padding: 40px 44px;
+      max-width: 560px; width: 100%; text-align: center;
+    }
+    .hack-api-icon { font-size: 40px; margin-bottom: 12px; }
+    .hack-api-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; color: var(--c-text); }
+    .hack-api-card > p { font-size: 14px; color: var(--c-text-2); margin-bottom: 20px; line-height: 1.6; }
+    .hack-input-row { display: flex; gap: 10px; }
+    .hack-input {
+      flex: 1; padding: 0 14px; height: 46px; border: 1.5px solid var(--c-border);
+      border-radius: var(--r-md); font-size: 14px; font-family: inherit;
+      color: var(--c-text); outline: none;
+      transition: border-color var(--t-fast);
+    }
+    .hack-input:focus { border-color: var(--c-primary); }
+    .hack-hint { font-size: 12px; color: var(--c-text-3); margin-top: 12px; }
+
+    /* API info link */
+    .hack-api-info-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 13px; font-weight: 600; color: var(--c-primary);
+      background: none; border: none; cursor: pointer; text-decoration: underline;
+      text-underline-offset: 2px; margin-top: 10px;
+      font-family: inherit;
+    }
+
+    /* hackathon cases */
+    .hack-tabs {
+      display: flex; gap: 3px; margin: 40px 0 20px;
+      background: #e0dcff; padding: 4px; border-radius: var(--r-md);
+      position: relative;
+    }
+    .hack-tab {
+      flex: 1; padding: 10px 14px; border-radius: var(--r-sm);
+      border: none; background: transparent;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: all var(--t-fast); color: var(--c-text-2);
+      font-family: inherit;
+    }
+    .hack-tab.active { background: var(--c-bg); color: var(--c-text); box-shadow: var(--sh-xs); }
+    .hack-settings-btn {
+      padding: 8px 12px; border: none; background: transparent;
+      cursor: pointer; border-radius: var(--r-sm); font-size: 16px;
+      transition: background var(--t-fast);
+    }
+    .hack-settings-btn:hover { background: rgba(255,255,255,.6); }
+
+    .hack-case { display: none; }
+    .hack-case.active { display: block; }
+
+    .hack-case-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .hack-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 5px 12px; border-radius: var(--r-pill);
+      font-size: 12px; font-weight: 700;
+    }
+    .hack-badge.easy   { background: #e8f5e9; color: #2e7d32; }
+    .hack-badge.medium { background: #fff8e1; color: #bf360c; }
+    .hack-badge.hard   { background: #fce4ec; color: #b71c1c; }
+    .hack-topic { font-size: 13px; color: var(--c-text-3); font-weight: 600; }
+
+    .hack-scenario, .hack-task {
+      background: var(--c-bg); border: 1px solid var(--c-border);
+      border-radius: var(--r-lg); padding: 24px 28px; margin-bottom: 12px;
+    }
+    .hack-scenario h3, .hack-task h3 {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--c-primary); margin-bottom: 12px;
+    }
+    .hack-scenario p { font-size: 15px; color: var(--c-text); line-height: 1.7; margin-bottom: 12px; }
+    .hack-context {
+      background: var(--c-bg-subtle); border-radius: var(--r-md);
+      padding: 16px 20px; margin-top: 4px;
+    }
+    .hack-context strong { font-size: 13px; color: var(--c-text); display: block; margin-bottom: 8px; }
+    .hack-context ul { padding-left: 18px; display: flex; flex-direction: column; gap: 5px; }
+    .hack-context li { font-size: 14px; color: var(--c-text-2); line-height: 1.6; }
+    .hack-task ol { padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+    .hack-task li { font-size: 14px; color: var(--c-text); line-height: 1.65; }
+
+    .hack-answer {
+      background: var(--c-bg); border: 1px solid var(--c-border);
+      border-radius: var(--r-lg); padding: 24px 28px; margin-bottom: 12px;
+    }
+    .hack-label { font-size: 13px; font-weight: 700; color: var(--c-text); display: block; margin-bottom: 10px; }
+    .hack-textarea {
+      width: 100%; min-height: 180px; padding: 14px 16px;
+      border: 1.5px solid var(--c-border); border-radius: var(--r-md);
+      font-size: 14px; font-family: inherit; line-height: 1.7;
+      color: var(--c-text); resize: vertical; outline: none;
+      transition: border-color var(--t-fast);
+    }
+    .hack-textarea:focus { border-color: var(--c-primary); }
+    .hack-actions {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 12px;
+    }
+    .hack-word-count { font-size: 12px; color: var(--c-text-3); }
+    .hack-submit { min-width: 200px; position: relative; }
+    .hack-submit.loading { opacity: .7; pointer-events: none; }
+    .spinner {
+      display: inline-block; width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,.35); border-top-color: #fff;
+      border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hack-result { display: none; border-radius: var(--r-xl); overflow: hidden; margin-bottom: 8px; }
+    .hack-result.visible { display: block; }
+    .hack-result-inner {
+      background: var(--c-bg); border: 2px solid var(--c-primary);
+      border-radius: var(--r-xl); padding: 28px 32px;
+    }
+    .hack-result-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+      padding-bottom: 16px; border-bottom: 1px solid var(--c-border);
+    }
+    .hack-result-icon { font-size: 28px; }
+    .hack-result-title { font-size: 16px; font-weight: 700; color: var(--c-text); }
+    .hack-scores { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .hack-score-item {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--c-bg-subtle); border-radius: var(--r-md);
+      padding: 6px 14px; font-size: 13px;
+    }
+    .hack-score-label { color: var(--c-text-2); }
+    .hack-score-val { font-weight: 700; color: var(--c-primary); }
+    .hack-feedback { font-size: 14px; color: var(--c-text); line-height: 1.75; }
+    .hack-feedback p { margin-bottom: 10px; }
+    .hack-error {
+      background: #fff0f0; border: 1.5px solid #ffc0c0;
+      border-radius: var(--r-lg); padding: 20px 24px; color: #c00; font-size: 14px;
+    }
+
+    /* ══ LLM GATEWAY MODAL ═════════════════════════════════════════════════════ */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,.45); backdrop-filter: blur(4px);
+      display: none; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--c-bg); border-radius: var(--r-xl);
+      width: 100%; max-width: 720px; max-height: 90vh;
+      overflow-y: auto; box-shadow: var(--sh-lg);
+      animation: modal-in .2s ease;
+    }
+    @keyframes modal-in {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 28px 20px; border-bottom: 1px solid var(--c-border);
+      position: sticky; top: 0; background: var(--c-bg); z-index: 1;
+    }
+    .modal-header h2 { font-size: 20px; font-weight: 800; color: var(--c-text); }
+    .modal-close {
+      width: 32px; height: 32px; border-radius: 50%; border: none;
+      background: var(--c-bg-subtle); color: var(--c-text-2);
+      font-size: 18px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background var(--t-fast);
+    }
+    .modal-close:hover { background: var(--c-border); color: var(--c-text); }
+    .modal-body { padding: 24px 28px; }
+
+    /* LLM info blocks */
+    .llm-hero {
+      background: linear-gradient(135deg, var(--c-deep) 0%, #2a1f8f 100%);
+      border-radius: var(--r-lg); padding: 24px;
+      margin-bottom: 24px; color: #fff;
+    }
+    .llm-hero__model { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .llm-hero__provider { font-size: 14px; color: rgba(255,255,255,.65); margin-bottom: 16px; }
+    .llm-hero__tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .llm-tag {
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      border-radius: var(--r-pill); padding: 4px 12px;
+      font-size: 12px; font-weight: 600; color: rgba(255,255,255,.85);
+    }
+
+    .llm-section { margin-bottom: 24px; }
+    .llm-section h3 {
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--c-primary); margin-bottom: 12px;
+    }
+    .llm-params {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .llm-param {
+      background: var(--c-bg-subtle); border: 1px solid var(--c-border);
+      border-radius: var(--r-md); padding: 12px 14px;
+    }
+    .llm-param__label { font-size: 11px; font-weight: 700; color: var(--c-text-3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px; }
+    .llm-param__val { font-size: 15px; font-weight: 700; color: var(--c-text); }
+
+    .llm-prompt {
+      background: var(--c-deep); border-radius: var(--r-lg); padding: 18px 20px;
+    }
+    .llm-prompt pre {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px; line-height: 1.7; color: rgba(255,255,255,.85);
+      white-space: pre-wrap; margin: 0;
+    }
+    .llm-prompt code { color: #A6C2FF; }
+
+    .llm-flow {
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .llm-flow-step {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--c-bg-subtle); border-radius: var(--r-md);
+      padding: 12px 14px; border: 1px solid var(--c-border);
+    }
+    .llm-flow-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--c-primary); color: #fff;
+      font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .llm-flow-text { font-size: 14px; color: var(--c-text); line-height: 1.55; }
+    .llm-flow-text strong { color: var(--c-text); font-weight: 700; }
+
+    /* ══ CTA ═══════════════════════════════════════════════════════════════════ */
+    .b-cta {
+      background: linear-gradient(135deg, var(--c-deep) 0%, #7D71FF 100%);
+      color: #fff; text-align: center; padding: 72px 0;
+    }
+    .b-cta h2 { font-size: clamp(24px, 4vw, 36px); font-weight: 800; margin-bottom: 12px; }
+    .b-cta p { font-size: 17px; opacity: .88; margin-bottom: 32px; max-width: 460px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+
+    /* ══ FOOTER ════════════════════════════════════════════════════════════════ */
+    .b-footer { background: var(--c-deep); color: rgba(255,255,255,.6); padding: 52px 0 32px; }
+    .b-footer__grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px; margin-bottom: 40px;
+    }
+    .b-footer__logo-wrap {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+    }
+    .b-footer__logo-img { height: 22px; filter: brightness(0) invert(1); }
+    .b-footer__logo-sep { width: 1px; height: 18px; background: rgba(255,255,255,.2); }
+    .b-footer__logo-label { font-size: 14px; font-weight: 700; color: rgba(255,255,255,.9); }
+    .b-footer__desc { font-size: 13px; line-height: 1.7; }
+    .b-footer__col h5 {
+      color: rgba(255,255,255,.9); font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em; margin-bottom: 14px;
+    }
+    .b-footer__col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .b-footer__col a {
+      color: rgba(255,255,255,.55); text-decoration: none; font-size: 13px;
+      transition: color var(--t-fast);
+    }
+    .b-footer__col a:hover { color: #fff; }
+    .b-footer__bottom {
+      padding-top: 28px; border-top: 1px solid rgba(255,255,255,.08);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px;
+    }
+
+    /* ══ SCROLL ANIMATIONS ═════════════════════════════════════════════════════ */
+    .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .55s ease, transform .55s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* ══ RESPONSIVE ════════════════════════════════════════════════════════════ */
+    @media (max-width: 960px) {
+      .b-levels__grid  { grid-template-columns: 1fr; }
+      .b-how__steps    { grid-template-columns: repeat(2,1fr); }
+      .b-how__steps::before { display: none; }
+      .ooda-grid       { grid-template-columns: repeat(2,1fr); }
+      .reviews-grid    { grid-template-columns: 1fr; }
+      .b-footer__grid  { grid-template-columns: 1fr 1fr; }
+      .b-header__nav   { display: none; }
+      .llm-params      { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .b-hero__stats { gap: 28px; }
+      .b-hero__title { font-size: 28px; }
+      .ooda-grid     { grid-template-columns: 1fr; }
+      .curriculum-tabs { width: 100%; }
+      .tab-btn       { flex: 1; text-align: center; font-size: 13px; padding: 8px 12px; }
+      .b-footer__grid { grid-template-columns: 1fr; gap: 28px; }
+      .b-footer__bottom { flex-direction: column; gap: 8px; text-align: center; }
+      .hack-input-row { flex-direction: column; }
+      .modal-header { padding: 18px 20px 16px; }
+      .modal-body { padding: 18px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ═══════════════════════════════════════════════════════════════════ -->
+<header class="b-header">
+  <div class="container">
+    <div class="b-header__inner">
+      <a href="#" class="b-header__logo">
+        <img class="b-header__logo-img"
+             src="https://static.tass.ru/static/tutu.ru/static/1.0.0.13478/img/logo.svg"
+             alt="Туту"
+             onerror="this.style.display='none'">
+        <div class="b-header__logo-sep"></div>
+        <span class="b-header__logo-label">Обучение</span>
+      </a>
+      <nav class="b-header__nav">
+        <a href="#levels"     class="b-header__nav-link">Уровни</a>
+        <a href="#curriculum" class="b-header__nav-link">Программа</a>
+        <a href="#ooda"       class="b-header__nav-link">OODA</a>
+        <a href="#reviews"    class="b-header__nav-link">Отзывы</a>
+        <a href="#hackathon"  class="b-header__nav-link">Хакатон</a>
+      </nav>
+      <a href="#hackathon" class="btn btn-primary btn-sm">Попробовать хакатон</a>
+    </div>
+  </div>
+</header>
+
+<!-- ══ HERO ══════════════════════════════════════════════════════════════════════ -->
+<section class="b-hero">
+  <div class="container">
+    <div class="b-hero__inner">
+      <div class="b-hero__badge">📚 Внутреннее обучение команды Туту</div>
+      <div class="b-hero__logo-wrap">
+        <img class="b-hero__logo-img"
+             src="https://static.tass.ru/static/tutu.ru/static/1.0.0.13478/img/logo.svg"
+             alt="Туту"
+             onerror="this.style.display='none'">
+      </div>
+      <h1 class="b-hero__title">
+        Думать как продакт.<br>
+        <span class="accent">Делать как чемпион.</span>
+      </h1>
+      <p class="b-hero__sub">11 тем. 3 уровня. Реальные кейсы Туту.<br>Без воды — только то, что реально работает в продукте.</p>
+      <div class="b-hero__btns">
+        <a href="#levels"     class="btn btn-white btn-lg">Начать с лёгкого →</a>
+        <a href="#curriculum" class="btn btn-ghost btn-lg">Смотреть программу</a>
+      </div>
+      <div class="b-hero__stats">
+        <div class="b-hero__stat">
+          <span class="b-hero__stat-num">3</span>
+          <div class="b-hero__stat-label">уровня — от «что такое PM» до «как расти»</div>
+        </div>
+        <div class="b-hero__stat">
+          <span class="b-hero__stat-num">11</span>
+          <div class="b-hero__stat-label">модулей с реальными кейсами Туту</div>
+        </div>
+        <div class="b-hero__stat">
+          <span class="b-hero__stat-num">AI</span>
+          <div class="b-hero__stat-label">живой фидбек на хакатоне</div>
+        </div>
+        <div class="b-hero__stat">
+          <span class="b-hero__stat-num">0₽</span>
+          <div class="b-hero__stat-label">полностью бесплатно для команды</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ LEVELS ════════════════════════════════════════════════════════════════════ -->
+<section class="b-levels" id="levels">
+  <div class="container">
+    <div class="text-center fade-in">
+      <div class="eyebrow">Структура курса</div>
+      <h2 class="section-title">Три уровня — один путь</h2>
+      <p class="section-sub">Выберите свой уровень или пройдите все три последовательно. Каждый строится на предыдущем.</p>
+    </div>
+    <div class="b-levels__grid">
+      <a href="#level-easy" class="level-card easy fade-in">
+        <span class="level-badge easy">🟢 Лёгкий</span>
+        <h3>Основы продакта</h3>
+        <p>Кто такой продакт, как он думает, что делает каждый день. Базовые инструменты и понятия для всех сотрудников компании.</p>
+        <div class="level-tags">
+          <span class="level-tag">Роль продакта</span>
+          <span class="level-tag">Метрики</span>
+          <span class="level-tag">Цели</span>
+          <span class="level-tag">Контекст</span>
+        </div>
+        <div class="level-meta">
+          <span>⏱ 2–3 часа</span>
+          <span>📄 4 темы</span>
+          <span>🎯 Для всех сотрудников</span>
+        </div>
+        <div class="level-progress"><div class="level-progress__fill" data-width="30"></div></div>
+      </a>
+      <a href="#level-medium" class="level-card medium fade-in">
+        <span class="level-badge medium">🟡 Средний</span>
+        <h3>Продуктовое мышление</h3>
+        <p>Discovery, стратегия, работа с командой. Глубже в профессию: как принимать решения, искать точки роста и строить процессы.</p>
+        <div class="level-tags">
+          <span class="level-tag">Discovery</span>
+          <span class="level-tag">Стратегия</span>
+          <span class="level-tag">Execution</span>
+          <span class="level-tag">OODA Loop</span>
+        </div>
+        <div class="level-meta">
+          <span>⏱ 4–5 часов</span>
+          <span>📄 4 темы</span>
+          <span>🎯 Для продактов и аналитиков</span>
+        </div>
+        <div class="level-progress"><div class="level-progress__fill" data-width="30"></div></div>
+      </a>
+      <a href="#level-hard" class="level-card hard fade-in">
+        <span class="level-badge hard">🔴 Хардовый</span>
+        <h3>Лидерство и карьера</h3>
+        <p>Коммуникация, лидерство, карьерный рост. Для тех, кто хочет расти в профессии и вести за собой команду.</p>
+        <div class="level-tags">
+          <span class="level-tag">Коммуникация</span>
+          <span class="level-tag">Лидерство</span>
+          <span class="level-tag">Карьера</span>
+          <span class="level-tag">Процессы</span>
+        </div>
+        <div class="level-meta">
+          <span>⏱ 5–6 часов</span>
+          <span>📄 3 темы</span>
+          <span>🎯 Для тимлидов и сеньоров</span>
+        </div>
+        <div class="level-progress"><div class="level-progress__fill" data-width="30"></div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ═══════════════════════════════════════════════════════════════ -->
+<section class="b-how">
+  <div class="container">
+    <div class="text-center fade-in">
+      <div class="eyebrow">Как это работает</div>
+      <h2 class="section-title">Обучение без лишних сложностей</h2>
+      <p class="section-sub">Никакой воды. Концепции, примеры из жизни Туту и проверка знаний в режиме детектива.</p>
+    </div>
+    <div class="b-how__steps fade-in">
+      <div class="how-step">
+        <div class="how-step__num">1</div>
+        <h4>Выбери уровень</h4>
+        <p>Начни с лёгкого или сразу с нужного. Тест в начале поможет определиться.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step__num">2</div>
+        <h4>Изучи материал</h4>
+        <p>Короткие блоки по 15–20 минут: теория + кейсы из Туту.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step__num">3</div>
+        <h4>Включи детектив</h4>
+        <p>Расследуй ситуации из жизни команды, собирай улики, делай выводы.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step__num">4</div>
+        <h4>Получи сертификат</h4>
+        <p>Прошёл уровень — получи подтверждение. Делись с командой.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CURRICULUM ═════════════════════════════════════════════════════════════════ -->
+<div class="det-mode-bar" id="detModeBar">
+  🔍 Режим детектива активирован — расследуй, собирай улики, делай выводы
+</div>
+<section class="b-curriculum" id="curriculum">
+  <div class="container">
+    <div class="fade-in">
+      <div class="eyebrow">Программа обучения</div>
+      <h2 class="section-title">Что внутри каждого уровня</h2>
+      <p class="section-sub">Всё структурировано по уровням — от «кто такой продакт» до карьерного пути.</p>
+    </div>
+    <div class="det-toggle-row">
+      <button class="det-toggle-btn" id="detToggle" onclick="toggleDetective()">
+        <span>🔍</span> Режим детектива
+      </button>
+    </div>
+    <div class="curriculum-tabs fade-in">
+      <button class="tab-btn active" onclick="switchTab('easy', event)">🟢 Лёгкий</button>
+      <button class="tab-btn"        onclick="switchTab('medium', event)">🟡 Средний</button>
+      <button class="tab-btn"        onclick="switchTab('hard', event)">🔴 Хардовый</button>
+    </div>
+
+    <!-- ── EASY ── -->
+    <div class="tab-content active" id="tab-easy">
+      <div id="level-easy" class="modules-list">
+
+        <div class="module-item" onclick="toggleModule(this)">
+          <div class="module-header">
+            <div class="module-num easy">01</div>
+            <div class="module-title">Кто такой продакт и зачем он нужен</div>
+            <div class="module-dur">~30 мин</div>
+            <div class="module-arrow">▶</div>
+          </div>
+          <div class="module-body">
+            <p class="module-hook">Продакт-менеджер — это не начальник разработчиков и не проджект с другим бейджиком. Это человек, который отвечает за правильный результат, не написав ни строчки кода лично.</p>
+            <h4>Что ты узнаешь</h4>
+            <ul class="lesson-list">
+              <li>Почему продакт не командует разработчиками, но именно он отвечает за результат</li>
+              <li>В чём реальная разница между продактом и проджектом — и почему путать их дорого</li>
+              <li>Что значит «координировать без власти» — и почему это сложнее, чем просто приказывать</li>
+              <li>Как Jobs To Be Done объясняет, зачем вообще существует любой продукт</li>
+              <li>Почему пользователь покупает не билет на поезд, а «добраться до мамы в Казань без стресса»</li>
+            </ul>
+            <h4>Главная идея</h4>
+            <p>Продакт держит в голове три вещи одновременно: что нужно пользователю, что реально для команды и что выгодно бизнесу. Он не пишет код, не рисует дизайн — его работа принимать решения о том, что строить и зачем.</p>
+            <p>Люди не покупают продукты — они нанимают их для выполнения работы. Пользователь Туту не «покупает билет на поезд». Он «решает добраться домой на Новый год, не тратя три часа на кассе».</p>
+            <div class="module-case">
+              <div class="module-case-label">📍 Пример из жизни Туту</div>
+              <p>Несколько лет назад команда заметила: люди массово ищут автобусы из маленьких городов, где нет ж/д станций. Вместо «мы — про поезда» спросили: какую работу нанимает пользователь? Оказалось — не «купить автобусный билет», а «уехать из точки А в точку Б». Сегодня автобусное направление Туту — отдельный бизнес с миллионами пользователей.</p>
+            </div>
+            <div class="module-takeaway">💡 <strong>Запомни:</strong> Продакт отвечает за результат без права приказа — только силой аргумента. Пользователь нанимает твой продукт на работу, и твоя задача — понять, какую именно.</div>
+            <div class="det-story"><div class="det-inner">  <div class="det-scene">
+    <span class="det-badge">🔍 Расследование</span>
+    <div class="det-narrative"><p>Понедельник, 09:15. Антон входит в переговорку с кофе и ноутбуком. Марина уже сидит за столом и смотрит на него так, как смотрят на человека, который потерял ключи от машины, но сам ещё не знает об этом.</p><p><em>— Ты видел цифры за прошлую неделю? — спрашивает она тихо.</em></p><p>Антон открывает дашборд. Конверсия в покупку: 2.1%. Было 2.1% три недели назад. Команда за это время выкатила новый поиск, переделала страницу результатов, починила баги в фильтрах. Дима закрыл 23 задачи. Конверсия стоит как вкопанная.</p><p><em>— Команда пашет, — говорит Антон, закрывая ноутбук. — Мы сделали всё, что планировали.</em></p><p>Марина кивает. Медленно. Так кивают, когда хотят сказать «ты сам слышишь, что говоришь?» — но не говорят вслух.</p></div>
+  </div>
+  <div class="det-clues">
+    <div class="det-clue-label">📋 Улики на столе</div>
+    <ul>
+      <li>Конверсия 2.1% — три недели без изменений, несмотря на активную разработку</li>
+      <li>Команда выполнила все запланированные задачи спринта в срок</li>
+      <li>Ни одна из выкаченных фич не была сформулирована как гипотеза с измеримым результатом</li>
+      <li>Антон не может назвать, какую проблему пользователя решала каждая из фич</li>
+    </ul>
+  </div>
+  <div class="det-choices" data-module="easy-01">
+    <div class="det-choice-label">🤔 Ты — Антон. Саша (CPO) через час спросит: «Что мы делаем не так?» Что ответишь?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">А — Объяснить Саше, что команда работала хорошо, просто нужно больше времени</button>
+    <button class="det-btn" data-letter="Б" data-result="partial">Б — Признать проблему и провести аудит: выяснить, почему фичи не двинули метрику</button>
+    <button class="det-btn" data-letter="В" data-result="right">В — Остановить текущий спринт, переформулировать все задачи как гипотезы с измеримым результатом</button>
+  </div>
+  <div class="det-reveal det-reveal-0" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p>Ты перечисляешь: новый поиск, 23 закрытых задачи. Саша слушает. Потом достаёт телефон, кладёт экраном вверх. Конверсия: 2.1%.</p><p><em>— Я рад, что команда работала. Но меня интересует вот это число. Как оно связано с тем, что ты мне рассказал?</em></p><p class="det-moral">Продакт отвечает за результат, а не за процесс. «Команда работала» — не ответ на вопрос «почему конверсия стоит».</p></div>
+  </div>
+  <div class="det-reveal det-reveal-1" style="display:none">
+    <div class="det-result-badge partial">⚡ Частично</div>
+    <div class="det-story-continue"><p>Ты признаёшь проблему, предлагаешь аудит. Саша: <em>— Хорошо. И что ты предлагаешь?</em> Марина потом говорит тихо: <em>— Мы уже знаем что пошло не так. Аудит это подтвердит — но мы потратим ещё неделю.</em></p><p class="det-moral">Признать проблему — хорошо. Но продакт должен менять систему на будущее, а не только диагностировать прошлое.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-2" style="display:none">
+    <div class="det-result-badge right">✅ Верно</div>
+    <div class="det-story-continue"><p>Ты говоришь Саше: <em>— Мы делали не те вещи. Я не убедился, что каждая задача связана с метрикой. Исправляю это сейчас.</em> Собираешь команду. Для каждой задачи — вопрос: «как изменится конверсия и почему?» Половина задач рассыпается сразу.</p><p>Через неделю бэклог вдвое короче, но каждая задача привязана к гипотезе. Дима ворчит, Марина улыбается впервые за три недели.</p><p class="det-moral">Продакт отвечает за результат, а не за длину списка закрытых задач. Остановить спринт ради переосмысления — это единственный способ перестать красиво топтаться на месте.</p></div>
+  </div></div></div>
+          </div>
+        </div>
+
+        <div class="module-item" onclick="toggleModule(this)">
+          <div class="module-header">
+            <div class="module-num easy">02</div>
+            <div class="module-title">Контекст работы: рынок, команда, компания</div>
+            <div class="module-dur">~25 мин</div>
+            <div class="module-arrow">▶</div>
+          </div>
+          <div class="module-body">
+            <p class="module-hook">Продакт без понимания рынка — штурман без карты. Двигаться можно, но куда именно — лучше не спрашивать.</p>
+            <h4>Что ты узнаешь</h4>
+            <ul class="lesson-list">
+              <li>Почему нельзя делать хороший продукт, не зная кто ещё играет на этом рынке</li>
+              <li>Как устроена команда продакта — и почему «моя команда» это не те, кем ты управляешь</li>
+              <li>Что значит работать внутри компании с несколькими направлениями</li>
+              <li>Как стратегия компании влияет на то, какие задачи вообще имеет смысл брать в работу</li>
+            </ul>
+            <h4>Главная идея</h4>
+            <p>Рынок онлайн-трэвел — это не просто Туту против РЖД. Это Туту против Яндекс.Путешествий, Aviasales, тысяч агентств. Продакт, который не следит за конкурентами, однажды обнаружит, что его «инновационная фича» уже полгода работает у соседа.</p>
+            <div class="module-case">
+              <div class="module-case-label">📍 Пример из жизни Туту</div>
+              <p>Команда одного направления решила добавить «сохранённые маршруты». Но данные показали: 70% пользователей — разовые, приходят раз в год. Функция для лояльных решала задачу 30% аудитории. Вместо неё взяли в работу улучшение первого опыта. Понимание контекста перевернуло приоритет.</p>
+            </div>
+            <div class="module-takeaway">💡 <strong>Запомни:</strong> Хорошее решение всегда учитывает три измерения — рынок, компанию и команду.</div>
+            <div class="det-story"><div class="det-inner">  <div class="det-scene">
+    <span class="det-badge">🔍 Расследование</span>
+    <div class="det-narrative"><p>Марина открывает дашборд. Adoption фичи «Избранные маршруты»: 4%. Шесть недель после релиза. Катя сидит напротив и смотрит в пустой стакан из-под кофе. Полгода она продвигала эту фичу. Дима написал код. Лена сделала иконку со звёздочкой. Все работали.</p><p><em>— Может, мы просто плохо рассказали о фиче? — говорит Катя. — Нужен онбординг, пуш-уведомление, баннер на главной.</em></p><p>Марина открывает другую вкладку: данные из App Store Reviews. Ни одного отзыва про «Избранные маршруты». Пользователи просто её не замечают.</p><p><em>— Или мы решили не ту проблему, — говорит Марина тихо.</em></p></div>
+  </div>
+  <div class="det-clues">
+    <div class="det-clue-label">📋 Улики на столе</div>
+    <ul>
+      <li>Adoption 4% через 6 недель — пользователи не возвращаются к фиче</li>
+      <li>Идея основана на аналогии со Spotify, а не на реальных интервью</li>
+      <li>В App Store Reviews — ноль упоминаний «Избранных маршрутов»</li>
+      <li>Большинство пользователей Туту покупают билеты на разовые поездки</li>
+    </ul>
+  </div>
+  <div class="det-choices" data-module="easy-02">
+    <div class="det-choice-label">🤔 Ты — Катя. Что стало настоящей причиной провала — и что делать дальше?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">А — Запустить маркетинговую кампанию: баннер, пуш-уведомление, онбординг для фичи</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Б — Провести пользовательские интервью, чтобы понять, какую работу хотят делегировать приложению</button>
+    <button class="det-btn" data-letter="В" data-result="partial">В — Удалить фичу, она явно не нужна пользователям</button>
+  </div>
+  <div class="det-reveal det-reveal-0" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p>Через две недели adoption вырос до 7%. Потом упал обратно до 4.5%. Пользователи нажали на баннер, посмотрели — и ушли. Потому что им не нужна была звёздочка: большинство едут раз в год.</p><p class="det-moral">Если фича не выполняет реальную работу пользователя — никакой маркетинг не поможет. 4% adoption — сигнал, что решается несуществующая проблема.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-1" style="display:none">
+    <div class="det-result-badge right">✅ Верно</div>
+    <div class="det-story-continue"><p>Десять интервью за три дня. Большинство открывали приложение, потому что вспомнили: нужно купить билет на конкретную дату. Один пользователь: <em>— Вот если бы приложение само следило и сообщало, когда покупать — это да, это я бы использовал.</em></p><p>Это не «избранное» — это подписка на маршрут с алертом. Совсем другая фича. Через квартал «Слежу за ценами» показывает 31% adoption.</p><p class="det-moral">Пользователь нанимает продукт на работу. Интервью до разработки — страховка от полугодовой работы впустую.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-2" style="display:none">
+    <div class="det-result-badge partial">⚡ Частично</div>
+    <div class="det-story-continue"><p>Фичу удалили. Метрики не изменились. Продукт стал чуть чище. Но через три месяца конкурент выкатил «Алерты о ценах» — и это взорвалось. Оказалось, пользователи очень хотели следить за стоимостью билетов.</p><p><em>— Нужно было не удалять, а понять, — говорит Марина. — Это разные действия.</em></p><p class="det-moral">Удалить провальную фичу — лучше, чем тащить мертвечину. Но настоящий вопрос не «удалять или нет», а «почему не взлетело и что пользователь хочет на самом деле».</p></div>
+  </div></div></div>
+          </div>
+        </div>
+
+        <div class="module-item" onclick="toggleModule(this)">
+          <div class="module-header">
+            <div class="module-num easy">03</div>
+            <div class="module-title">Цели и метрики — язык продакта</div>
+            <div class="module-dur">~40 мин</div>
+            <div class="module-arrow">▶</div>
+          </div>
+          <div class="module-body">
+            <p class="module-hook">«Сделать лучше» — это не цель, это пожелание. Цель — когда ты точно знаешь, как поймёшь, что стало лучше.</p>
+            <h4>Что ты узнаешь</h4>
+            <ul class="lesson-list">
+              <li>Чем цель отличается от метрики — и почему путать их стоит дорого</li>
+              <li>Что такое North Star Metric и почему у каждого продукта она своя</li>
+              <li>Как работает OKR и зачем он нужен именно продакту</li>
+              <li>Почему метрика без контекста — просто число, которое ни о чём не говорит</li>
+              <li>Как выбрать метрику, которая не врёт</li>
+            </ul>
+            <h4>Главная идея</h4>
+            <p>Цель — куда мы идём. Метрика — как понимаем, что идём туда. «Увеличить конверсию» — цель. «Конверсия из поиска в оплату выросла с 3.2% до 4.0% за квартал» — метрика с контекстом.</p>
+            <p>OKR — Objective (качественный, куда идём) + Key Results (измеримые, как поймём). Три числа — и сразу понятно, что делать.</p>
+            <div class="module-case">
+              <div class="module-case-label">📍 Пример из жизни Туту</div>
+              <p>Команда поставила цель «улучшить UX на этапе выбора места». Когда спросили «как поймём?» — стало тихо. После работы с аналитиком: доля пользователей, меняющих место более двух раз — 23%. После редизайна схемы вагона — 11%. Теперь было что праздновать.</p>
+            </div>
+            <div class="module-takeaway">💡 <strong>Запомни:</strong> Метрика без цели — просто число. Цель без метрики — просто слова. Продакт соединяет одно с другим.</div>
+            <div class="det-story"><div class="det-inner">  <div class="det-scene">
+    <span class="det-badge">🔍 Расследование</span>
+    <div class="det-narrative"><p>Квартальный ревью. NPS за квартал: вырос с 34 до 51. Антон три месяца работал над этим — убирал трение, ускорял поиск, добавлял понятные сообщения об ошибках.</p><p>Саша открывает ноутбук и молчит несколько секунд.</p><p><em>— NPS отличный. Но выручка за квартал упала на 8%. Как это объяснить?</em></p><p>Антон не ожидал этого вопроса. Он начинает говорить про долгосрочное влияние на retention, но Саша перебивает: <em>— Антон, мы не НКО. Нам нужно зарабатывать деньги.</em></p></div>
+  </div>
+  <div class="det-clues">
+    <div class="det-clue-label">📋 Улики на столе</div>
+    <ul>
+      <li>NPS вырос с 34 до 51 — значительное улучшение</li>
+      <li>Выручка упала на 8% за тот же период</li>
+      <li>Антон оптимизировал UX, но не трогал воронку покупки</li>
+      <li>NPS измеряет удовлетворённость, но не факт покупки</li>
+    </ul>
+  </div>
+  <div class="det-choices" data-module="easy-03">
+    <div class="det-choice-label">🤔 Ты — Антон. Как объяснить разрыв между NPS и выручкой — и что изменить?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">А — Объяснить, что NPS влияет на выручку с задержкой: довольные пользователи вернутся</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Б — Признать, что выбрал неправильную основную метрику, и предложить пересмотреть систему</button>
+    <button class="det-btn" data-letter="В" data-result="partial">В — Найти другие причины: сезонность, конкуренты, внешние факторы</button>
+  </div>
+  <div class="det-reveal det-reveal-0" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p>Следующий квартал. Выручка выросла на 1.2% — в рамках погрешности. Саша: <em>— Ты говорил, что выручка вырастет. Её нет. Что происходит?</em></p><p class="det-moral">NPS — не плохая метрика, но она не равна выручке. Аргумент «подождите, задержка» — способ отложить неудобный разговор. Каждая продуктовая метрика должна иметь прямую связь с бизнес-результатом.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-1" style="display:none">
+    <div class="det-result-badge right">✅ Верно</div>
+    <div class="det-story-continue"><p><em>— Я выбрал NPS как основную метрику — и это была ошибка. NPS показывает удовлетворённость, но не покупку. Я оптимизировал не то.</em> Саша: <em>— Что предлагаешь?</em></p><p>Новая система: конверсия из поиска в покупку — основная. NPS — здоровье, мониторим, но не гонимся. Следующий квартал: конверсия +3.1%, выручка +6%. NPS тоже держится.</p><p class="det-moral">Метрика должна быть связана с бизнес-результатом. Если главная метрика растёт, а деньги падают — ты измеряешь не то.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-2" style="display:none">
+    <div class="det-result-badge partial">⚡ Частично</div>
+    <div class="det-story-continue"><p>Ты находишь сезонность и конкурентов, объясняешь -5%. Саша: <em>— Хорошо. Но у нас -8%. Где ещё -3%?</em> Марина потом показывает: конверсия упала именно там, где ты убирал «трение» — некоторые подсказки реально помогали не бросать корзину.</p><p class="det-moral">Внешние факторы реальны, и их нужно учитывать. Но они не должны стать укрытием от неудобных вопросов про собственные метрики.</p></div>
+  </div></div></div>
+          </div>
+        </div>
+
+        <div class="module-item" onclick="toggleModule(this)">
+          <div class="module-header">
+            <div class="module-num easy">04</div>
+            <div class="module-title">Как принимаются продуктовые решения</div>
+            <div class="module-dur">~35 мин</div>
+            <div class="module-arrow">▶</div>
+          </div>
+          <div class="module-body">
+            <p class="module-hook">Каждый день продакт принимает решения с неполными данными, под давлением дедлайнов — и именно в этом вся соль профессии.</p>
+            <h4>Что ты узнаешь</h4>
+            <ul class="lesson-list">
+              <li>Почему интуиция — это не враг данных, а их партнёр (если правильно пользоваться)</li>
+              <li>Что такое гипотеза — и почему без неё любой эксперимент это трата времени</li>
+              <li>Как устроен цикл принятия решения от идеи до вывода</li>
+              <li>Почему A/B-тест не решает всё — и когда он вообще не нужен</li>
+              <li>Как не утонуть в данных и не принимать решения «на ощущениях»</li>
+            </ul>
+            <h4>Главная идея</h4>
+            <p>Гипотеза — это структурированное утверждение: «Мы считаем, что [изменение X] приведёт к [результату Y] для [пользователя Z], потому что [логика/данные]». Без этой структуры эксперимент превращается в «давайте попробуем».</p>
+            <div class="module-case">
+              <div class="module-case-label">📍 Пример из жизни Туту</div>
+              <p>Пользователи бросали оформление на шаге ввода данных. Гипотеза 1 — «форма слишком длинная». Сделали короче — ничего. Гипотеза 2 — «не понимают, зачем нужны отчество и серия паспорта». Добавили объяснение. Конверсия +8%. Два дня разработки. Проблема была не в длине — в доверии.</p>
+            </div>
+            <div class="module-takeaway">💡 <strong>Запомни:</strong> Хорошее решение сформулировано как гипотеза, проверено разумным способом и честно интерпретировано, даже если результат оказался неожиданным.</div>
+            <div class="det-story"><div class="det-inner">  <div class="det-scene">
+    <span class="det-badge">🔍 Расследование</span>
+    <div class="det-narrative"><p>Антон врывается в общий чат: «Тест победил!!! Раскатываем новую версию кнопки на всех!!!»</p><p>Марина открывает отчёт. Тест идёт пять дней. Выборка: 890 пользователей на вариант. Конверсия варианта B выше на 0.8 п.п. p-value: 0.34.</p><p><em>— Антон, подожди. p-value у нас 0.34.</em></p><p><em>— Ну и что? B лучше A, видно же невооружённым глазом. Зачем ждать?</em></p><p>Дима присылает в чат один символ: «👀».</p></div>
+  </div>
+  <div class="det-clues">
+    <div class="det-clue-label">📋 Улики на столе</div>
+    <ul>
+      <li>p-value теста = 0.34 — это 34% вероятность случайного результата</li>
+      <li>Стандартный порог статистической значимости — p &lt; 0.05</li>
+      <li>Выборка всего 890 пользователей на вариант — недостаточно</li>
+      <li>Тест идёт 5 дней — недостаточно для полного недельного паттерна</li>
+    </ul>
+  </div>
+  <div class="det-choices" data-module="easy-04">
+    <div class="det-choice-label">🤔 Ты — Марина. Как убедить Антона не останавливать тест раньше времени?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">А — Согласиться: разница есть, значит можно раскатывать</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Б — Объяснить, что p=0.34 — незначимый результат, и дождаться нужной выборки</button>
+    <button class="det-btn" data-letter="В" data-result="partial">В — Предложить компромисс: раскатить на 20% и посмотреть</button>
+  </div>
+  <div class="det-reveal det-reveal-0" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p>Через три недели конверсия вернулась к значениям варианта A. Разница оказалась шумом. Антон: <em>— Но тест же показал плюс! Как так?</em> — <em>— p=0.34 означает, что в 34 случаях из 100 такой результат случаен. Мы попали в эти 34 случая.</em></p><p class="det-moral">A/B тест без статистической значимости — это угадайка. Раскатывать p=0.34 — значит принимать решения на основе шума, а не сигнала.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-1" style="display:none">
+    <div class="det-result-badge right">✅ Верно</div>
+    <div class="det-story-continue"><p>Ты объясняешь в личке: <em>— p=0.34 — это как подбросить монетку три раза и получить три орла. Нам нужно p ниже 0.05. Сейчас тест говорит «может быть».</em> Через две недели — p=0.03. Конверсия +0.6% — честная и устойчивая.</p><p class="det-moral">Статистическая значимость — это защита от самообмана. Подождать — значит принять решение, которое можно защитить данными.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-2" style="display:none">
+    <div class="det-result-badge partial">⚡ Частично</div>
+    <div class="det-story-continue"><p>Раскатываете на 20%. Через неделю — p=0.19. Снова незначимо. Антон хочет раскатить на всех. Марина: <em>— Без статистической значимости — вывод одинаково ненадёжен. Нам просто нужно было ждать нужного p-value.</em></p><p class="det-moral">Частичная раскатка не решает проблему незначимого результата — она её маскирует. Правильный ответ — ждать нужную выборку.</p></div>
+  </div></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── MEDIUM ── -->
+    <div class="tab-content" id="tab-medium">
+      <div id="level-medium" class="modules-list">
+
+        <div class="module-item" onclick="toggleModule(this)">
+          <div class="module-header">
+            <div class="module-num medium">01</div>
+            <div class="module-title">Discovery — как понять что делать</div>
+            <div class="module-dur">~50 мин</div>
+            <div class="module-arrow">▶</div>
+          </div>
+          <div class="module-body">
+            <p class="module-hook">Если начинаешь с решения, не зная проблему — ты не продакт, ты угадывалка.</p>
+            <h4>Что ты узнаешь</h4>
+            <ul class="lesson-list">
+              <li>Что такое Job-to-be-Done и почему «хочу купить билет на электричку» — это ещё не job</li>
+              <li>Как строить job graph: от Big Job до Small Job — и где в нём прячутся деньги</li>
+              <li>Как провести switch-интервью и вытащить из пользователя то, о чём он сам не знает</li>
+              <li>Почему Discovery — это охота на недообслуженные работы, а не валидация своих идей</li>
+            </ul>
+            <h4>Главная идея</h4>
+            <p>Discovery — честный ответ на вопрос: какую работу люди пытаются сделать, и почему существующие решения справляются с этим плохо? Job — это движение из точки А (текущее состояние) в точку Б (желаемое) при наличии триггера.</p>
+            <p>Switch-интервью строится вокруг трёх стадий: человек раздражён старым → начал активно искать → принял решение. Твоя задача — найти триггеры и понять, где людям сейчас плохо и почему.</p>
+            <div class="module-case">
+              <div class="module-case-label">📍 Пример из жизни Туту</div>
+              <p>Команда видела: конверсия на маршрутах малых городов ниже. Первый порыв — улучшить фильтры. Но switch-интервью с 12 пользователями показало: люди не доверяли расписанию — боялись, что автобус уже не ходит. После добавления статуса актуальности — конверсия выросла. Не потому что стало красивее — потому что закрыли реальный job.</p>
+            </div>
+            <div class="module-takeaway">💡 <strong>Запомни:</strong> Discovery — не про подтверждение своих идей, а про поиск работ, которые никто нормально не делает. Найди их — и у тебя будет продукт. Не найди — и у тебя будет фича.</div>
+            <div class="det-story"><div class="det-inner">  <div class="det-scene">
+    <span class="det-badge">🔍 Расследование</span>
+    <div class="det-narrative"><p>Три месяца. Дима написал 4800 строк кода. Команда выкатила систему расширенных фильтров: по времени, перевозчику, типу автобуса, наличию кондиционера. Красиво. Технически сложно. Adoption: 6%.</p><p>71% используют только один фильтр — «ближайший рейс».</p><p><em>— Я провела три месяца с командой над этим. Почему люди не используют? — говорит Катя Марине.</em></p><p>Марина запускает запись пользовательской сессии. Пользователь нажимает «ближайший рейс»… и звонит по телефону: «А автобус-то вообще ходит сейчас?»</p></div>
+  </div>
+  <div class="det-clues">
+    <div class="det-clue-label">📋 Улики на столе</div>
+    <ul>
+      <li>71% пользователей фильтров используют только «ближайший рейс»</li>
+      <li>На записях сессий: пользователи проверяют факт существования маршрута, а не удобство</li>
+      <li>Интервью не проводились до разработки — идея пришла от анализа конкурентов</li>
+      <li>Главный страх пользователей: «а вдруг автобус вообще не ходит?» — это не закрывается фильтрами</li>
+    </ul>
+  </div>
+  <div class="det-choices" data-module="medium-01">
+    <div class="det-choice-label">🤔 Ты — Катя. Что нужно было сделать до разработки — и что делать теперь?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">А — Провести A/B тест: упростить интерфейс фильтров, чтобы было проще их использовать</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Б — Провести JTBD-интервью, понять реальный страх и переосмыслить фичу</button>
+    <button class="det-btn" data-letter="В" data-result="partial">В — Принять результат: 6% — нормально для «power user» фичи, оставить как есть</button>
+  </div>
+  <div class="det-reveal det-reveal-0" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p>Adoption вырос с 6% до 9%. Но запись новой сессии: пользователь смотрит на упрощённые фильтры, нажимает «ближайший рейс»… и звонит с тем же вопросом: «А автобус ходит?»</p><p class="det-moral">Упрощение неправильного решения не делает его правильным. Нужно понять, какую работу пользователь реально хочет сделать.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-1" style="display:none">
+    <div class="det-result-badge right">✅ Верно</div>
+    <div class="det-story-continue"><p>Первый же разговор переворачивает картину: <em>— Я всегда звоню на автостанцию, чтобы убедиться, что автобус реально есть. Был случай, приехал — а рейс отменили.</em> Пять интервью — пять вариаций одного страха.</p><p>Катя: <em>— Нам нужна не система фильтров, а подтверждение актуальности рейса.</em> Дима: <em>— Это я сделаю за две недели.</em> Adoption: 34%.</p><p class="det-moral">JTBD-интервью до разработки — это защита от трёх месяцев работы над неправильной задачей.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-2" style="display:none">
+    <div class="det-result-badge partial">⚡ Частично</div>
+    <div class="det-story-continue"><p><em>— Фильтры для продвинутых пользователей, — объясняет Катя. — 6% — это наша целевая аудитория.</em> Саша: <em>— Три месяца на фичу для 6% — нормальная инвестиция?</em></p><p class="det-moral">«Это для power users» — иногда честный ответ, но только если это решение принималось до разработки. Принять 6% как план постфактум — это рационализация, а не стратегия.</p></div>
+  </div></div></div>
+          </div>
+        </div>
+
+        <div class="module-item" onclick="toggleModule(this)">
+          <div class="module-header">
+            <div class="module-num medium">02</div>
+            <div class="module-title">Стратегия продукта: OODA Loop</div>
+            <div class="module-dur">~55 мин</div>
+            <div class="module-arrow">▶</div>
+          </div>
+          <div class="module-body">
+            <p class="module-hook">Стратегия — это не документ на 40 слайдов. Это процесс, который ты повторяешь каждую неделю.</p>
+            <h4>Что ты узнаешь</h4>
+            <ul class="lesson-list">
+              <li>Что такое OODA Loop и почему он лучше любого стратегического фреймворка</li>
+              <li>Как правильно «наблюдать»: какие данные важны, а какие просто приятны</li>
+              <li>Что значит «ориентироваться» — и почему это самый недооценённый шаг</li>
+              <li>Как принимать решения в условиях неполной информации</li>
+              <li>Почему стратегия без действия — это просто дорогая презентация</li>
+            </ul>
+            <h4>Главная идея</h4>
+            <p>OODA Loop придумал военный лётчик Джон Бойд: американские пилоты побеждали на худших самолётах, потому что быстрее проходили Observe → Orient → Decide → Act. В продукте — то же самое.</p>
+            <p>Стратегия в OODA — не «мы идём туда три года». Это «сейчас мы видим вот это, интерпретируем так, делаем этот шаг, смотрим на результат». Цикл — неделю-две. Если стратегия обновляется раз в квартал — ты уже отстал.</p>
+            <div class="module-case">
+              <div class="module-case-label">📍 Пример из жизни Туту</div>
+              <p>В 2022 году спрос на внутренний туризм резко вырос. Команда прошла OODA: наблюдала за ростом запросов на отели, поняла, что это новая норма, ускорила работу с региональными партнёрами. Цикл занял три недели. Конкуренты ждали «пока устаканится».</p>
+            </div>
+            <div class="module-takeaway">💡 <strong>Запомни:</strong> Стратегия — это глагол, а не существительное. OODA Loop — инструмент оставаться живым в меняющемся рынке.</div>
+            <div class="det-story"><div class="det-inner">  <div class="det-scene">
+    <span class="det-badge">🔍 Расследование</span>
+    <div class="det-narrative"><p>Февраль. Конкурент выкатывает мгновенное бронирование без регистрации, оплата через SberPay одним нажатием. Марина замечает это в понедельник, пишет в чат.</p><p>Антон: <em>«Интересно. Надо разобраться, насколько критично».</em> Проходит неделя. Марина: конкурент забрал 12% трафика в сегменте «спонтанные поездки».</p><p><em>— Нам нужно что-то решить, — говорит Лена.</em></p><p><em>— Согласен, давайте сначала изучим их подход подробнее. Марина, можешь сделать конкурентный анализ?</em> Два часа. 18 страниц. Воркшоп переносится. Потом ещё раз. Через месяц: конкурент — 23% трафика.</p></div>
+  </div>
+  <div class="det-clues">
+    <div class="det-clue-label">📋 Улики на столе</div>
+    <ul>
+      <li>Конкурент захватил 12% трафика за первую неделю, 23% за месяц</li>
+      <li>Команда собирала данные три недели вместо того, чтобы действовать</li>
+      <li>Сегмент «спонтанные поездки» — высокомаржинальный</li>
+      <li>Преимущество конкурента — скорость и отсутствие трения, а не цена</li>
+    </ul>
+  </div>
+  <div class="det-choices" data-module="medium-02">
+    <div class="det-choice-label">🤔 Ты — Антон. Где был момент, когда нужно было действовать?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">А — Заказать ещё один детальный анализ: понять, как конкурент технически реализовал фичу</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Б — На второй неделе запустить быстрый эксперимент: упростить оплату для сегмента «в день поездки»</button>
+    <button class="det-btn" data-letter="В" data-result="partial">В — Скопировать фичу конкурента один в один</button>
+  </div>
+  <div class="det-reveal det-reveal-0" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p>Ещё три недели анализа. Саша: <em>— Мы потеряли 23% сегмента за месяц. Что мы делаем?</em> Антон открывает папку с двумя аналитическими документами.</p><p class="det-moral">OODA Loop должен завершаться действием. Если застрял в «Observe» и «Orient» — ты наблюдаешь ситуацию, пока конкурент её формирует.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-1" style="display:none">
+    <div class="det-result-badge right">✅ Верно</div>
+    <div class="det-story-continue"><p>Антон на второй неделе: <em>— Вот что знаем: они убрали трение при оплате. Нам нужен эксперимент на этой неделе, не детальный анализ.</em> Через восемь дней — упрощённый флоу для пользователей, заходящих менее чем за 24 часа до рейса. Динамика конкурента останавливается.</p><p class="det-moral">Быстрый несовершенный эксперимент лучше идеального плана, который рождается слишком поздно.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-2" style="display:none">
+    <div class="det-result-badge partial">⚡ Частично</div>
+    <div class="det-story-continue"><p>Через полтора месяца фича готова. Трафик частично возвращается. Но конкурент добавил пуш-уведомление «ваш автобус через 2 часа». Снова опережение. Марина: <em>— Нам нужно понять пользователя, а не что делает конкурент. Иначе навсегда в роли догоняющих.</em></p><p class="det-moral">Копирование лучше долгого анализа — но это полрешения. Копируя конкурента, всегда в позиции догоняющего.</p></div>
+  </div></div></div>
+          </div>
+        </div>
+
+        <div class="module-item" onclick="toggleModule(this)">
+          <div class="module-header">
+            <div class="module-num medium">03</div>
+            <div class="module-title">Execution — от идеи к результату</div>
+            <div class="module-dur">~45 мин</div>
+            <div class="module-arrow">▶</div>
+          </div>
+          <div class="module-body">
+            <p class="module-hook">Идей у всех навалом. Побеждает тот, кто умеет их быстро убивать или запускать.</p>
+            <h4>Что ты узнаешь</h4>
+            <ul class="lesson-list">
+              <li>Почему бэклог — это список ставок, а не обещания команде</li>
+              <li>Как проектировать эксперименты, которые дают ответ за 2 недели</li>
+              <li>Что такое минимально проверяемая гипотеза и чем она отличается от MVP</li>
+              <li>Как не застрять в «давайте ещё поисследуем» и начать делать</li>
+              <li>Как измерить результат и не обманывать себя метриками</li>
+            </ul>
+            <h4>Главная идея</h4>
+            <p>Execution начинается с честного признания: ты не знаешь, сработает ли идея. Поэтому каждый элемент бэклога — ставка. Хорошая гипотеза: что делаем + для кого + какой результат + как измерим.</p>
+            <div class="module-case">
+              <div class="module-case-label">📍 Пример из жизни Туту</div>
+              <p>Команда электричек хотела увеличить долю покупок через мобильное приложение. Проблема оказалась не в скорости, а в offline-режиме: пользователи едут в метро и не могут завершить оформление. После добавления офлайн-возможности — конверсия выросла.</p>
+            </div>
+            <div class="module-takeaway">💡 <strong>Запомни:</strong> Бэклог — список ставок. Каждая ставка — гипотеза с критериями проверки. Быстрый дешёвый провал — лучший результат, если он учит.</div>
+            <div class="det-story"><div class="det-inner">  <div class="det-scene">
+    <span class="det-badge">🔍 Расследование</span>
+    <div class="det-narrative"><p>Шесть месяцев назад Вася пришёл с идеей: «Личный кабинет путешественника». Единое место: история поездок, документы, сохранённые маршруты. Все согласились. Никто не спрашивал, есть ли у пользователей такая проблема.</p><p>Шесть месяцев работы. Три разработчика. Релиз в срок, красивый. Usage через два месяца: 2%. Из них половина — сотрудники, которые тестировали.</p><p><em>— Два процента, — читает Марина вслух, глядя на Васю. — Два. Процента.</em></p></div>
+  </div>
+  <div class="det-clues">
+    <div class="det-clue-label">📋 Улики на столе</div>
+    <ul>
+      <li>Usage 2% через два месяца — половина из них внутренние тестировщики</li>
+      <li>Гипотеза «пользователи хотят историю поездок» никогда не проверялась</li>
+      <li>Шесть месяцев разработки без единого пользовательского интервью</li>
+      <li>Большинство пользователей Туту — разовые покупатели</li>
+    </ul>
+  </div>
+  <div class="det-choices" data-module="medium-03">
+    <div class="det-choice-label">🤔 Ты — Вася. Что нужно было сделать полгода назад — и как изменить подход?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">А — Добавить онбординг: пользователи просто не знают о возможностях кабинета</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Б — Провести интервью, понять реальные паттерны — и либо разворот, либо закрыть фичу</button>
+    <button class="det-btn" data-letter="В" data-result="wrong">В — Оставить как есть: со временем пользователи привыкнут</button>
+  </div>
+  <div class="det-reveal det-reveal-0" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p>Онбординг запущен. Usage вырос до 3.5%. Через месяц упал. Потому что пользователи едут раз в год — им не нужна история поездок. Лена: <em>— Онбординг — это как красиво упаковать подарок, который человек не просил.</em></p><p class="det-moral">Онбординг решает проблему «пользователь не знает о фиче». Он не решает «пользователю не нужна фича». Это разные диагнозы.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-1" style="display:none">
+    <div class="det-result-badge right">✅ Верно</div>
+    <div class="det-story-continue"><p>Первый же разговор: <em>— История поездок? Зачем? Я езжу раз в год к сестре. Помню без приложения.</em> Третий, ценный: <em>— Вот если бы приложение напоминало, что скоро лето и пора брать билеты — это я бы использовал.</em></p><p>Новая фича — «Умные напоминания» — 18% adoption через квартал. Больно, но правильно.</p><p class="det-moral">Шесть месяцев разработки без проверки гипотезы — работа над предположением. Интервью или прототип перед стартом стоят недели, а не полугода команды.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-2" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p><em>— Нужно время, — говорит Вася. — Такие фичи не взлетают сразу.</em> Следующий квартал: 2.3%. Саша: <em>— Два квартала — это шесть месяцев ожидания после шести месяцев разработки. Что именно должно измениться само по себе?</em></p><p class="det-moral">«Подождём — привыкнут» — самый дорогой способ избежать неудобного разговора. Пользователи не привыкают к фичам, которые им не нужны.</p></div>
+  </div></div></div>
+          </div>
+        </div>
+
+        <div class="module-item" onclick="toggleModule(this)">
+          <div class="module-header">
+            <div class="module-num medium">04</div>
+            <div class="module-title">Процесс работы продакта</div>
+            <div class="module-dur">~40 мин</div>
+            <div class="module-arrow">▶</div>
+          </div>
+          <div class="module-body">
+            <p class="module-hook">Продакт без процесса — это хаос с красивым названием «agile».</p>
+            <h4>Что ты узнаешь</h4>
+            <ul class="lesson-list">
+              <li>Три режима работы продакта: думать, решать, делать — и почему важно их не мешать</li>
+              <li>Как устроена неделя продакта на уровне Senior и выше</li>
+              <li>Экспертное интервью с конкурентом: как за 40 минут узнать чужие инсайты</li>
+              <li>Написание PRD: что обязательно, что убивает документ</li>
+              <li>Регулярные практики: ревью, ретро, планирование — зачем они на самом деле</li>
+            </ul>
+            <h4>Главная идея</h4>
+            <p>Продакт работает в трёх режимах: думать (Discovery, стратегия), решать (приоритизация, согласование), делать (PRD, синхронизация). Главная ошибка — смешивать режимы.</p>
+            <div class="module-case">
+              <div class="module-case-label">📍 Пример из жизни Туту</div>
+              <p>Продакт автобусов ввёл правило: каждую пятницу — «тихий час» без встреч для анализа данных. За три месяца количество проверенных гипотез выросло втрое — не потому что стали работать больше, а потому что появилось время думать.</p>
+            </div>
+            <div class="module-takeaway">💡 <strong>Запомни:</strong> Хороший процесс — не набор митингов. Это структура, которая даёт тебе время думать, быстро решать и не застревать в деталях.</div>
+            <div class="det-story"><div class="det-inner">  <div class="det-scene">
+    <span class="det-badge">🔍 Расследование</span>
+    <div class="det-narrative"><p>Настя онлайн с восьми утра. Ответила на 47 сообщений в Slack, три созвона, фидбек Лене, два комментария в Jira. Сейчас 20:00. Настя всё ещё онлайн.</p><p>Саша пишет в личку: <em>«Настя, у нас завтра квартальный ревью. Покажи, какие гипотезы ты проверила за три месяца».</em></p><p>Настя открывает Jira. Notion. Slack. Двенадцать часов работы каждый день — и ни одной закрытой гипотезы. Есть задачи. Есть фидбек. Есть координация. Но нет ни одного эксперимента, который завершился ответом «да» или «нет».</p><p><em>— Я очень занята, — думает Настя. — Но чем именно?</em></p></div>
+  </div>
+  <div class="det-clues">
+    <div class="det-clue-label">📋 Улики на столе</div>
+    <ul>
+      <li>Настя онлайн 12+ часов в день уже несколько месяцев</li>
+      <li>За квартал — ноль проверенных гипотез, только операционная загрузка</li>
+      <li>Большая часть времени — координация, фидбек и реакция на входящие</li>
+      <li>Продакт работает в трёх режимах: думать, решать, делать — Настя застряла в «делать»</li>
+    </ul>
+  </div>
+  <div class="det-choices" data-module="medium-04">
+    <div class="det-choice-label">🤔 Ты — Настя. Как выйти из режима «постоянно делаю»?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">А — Работать ещё эффективнее: оптимизировать расписание, сократить время на каждую задачу</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Б — Поговорить с Сашей честно: показать, чем реально занято время, договориться о защищённом времени</button>
+    <button class="det-btn" data-letter="В" data-result="partial">В — Делегировать координационные задачи и освободить время самостоятельно</button>
+  </div>
+  <div class="det-reveal det-reveal-0" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p>Приложение для управления временем. Блоки. Таймер Помодоро. Теперь онлайн одиннадцать часов вместо двенадцати. Гипотез — ноль. Потому что проблема не в скорости, а в том, какие задачи вообще в списке.</p><p class="det-moral">Оптимизация занятости не решает проблему неправильной занятости. Вопрос не «как успеть больше», а «что должно быть в моём списке».</p></div>
+  </div>
+  <div class="det-reveal det-reveal-1" style="display:none">
+    <div class="det-result-badge right">✅ Верно</div>
+    <div class="det-story-continue"><p>Настя открывает Toggl: 68% — реакция на входящие, 19% — координация, 13% — фидбек, 0% — гипотезы. Показывает пирог Саше. <em>— Мне нужны два защищённых блока в неделю по три часа. Иначе следующий квартал будет таким же.</em></p><p>Саша: <em>— Почему не сказала раньше?</em> Через месяц — две закрытые гипотезы. Через квартал — пять.</p><p class="det-moral">Продакт работает в трёх режимах. Если всегда в «делать» — ты операционный менеджер. Защищённое время на думать — не роскошь, это основная работа.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-2" style="display:none">
+    <div class="det-result-badge partial">⚡ Частично</div>
+    <div class="det-story-continue"><p>Настя начинает делегировать. Первые две недели — хаос. Дима и маркетинг не могут договориться. Лена всё равно зовёт Настю. Через месяц — полтора часа свободны, одна гипотеза. Но Дима жалуется Саше: <em>— Не понимаю, кто принимает решения.</em></p><p class="det-moral">Делегирование — правильный инструмент, но требует системы: чёткие зоны ответственности и доверие. Без договорённостей — источник новых конфликтов.</p></div>
+  </div></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── HARD ── -->
+    <div class="tab-content" id="tab-hard">
+      <div id="level-hard" class="modules-list">
+
+        <div class="module-item" onclick="toggleModule(this)">
+          <div class="module-header">
+            <div class="module-num hard">01</div>
+            <div class="module-title">Коммуникация: говоришь — значит влияешь</div>
+            <div class="module-dur">~60 мин</div>
+            <div class="module-arrow">▶</div>
+          </div>
+          <div class="module-body">
+            <p class="module-hook">Ты можешь быть самым умным в комнате — и всё равно проиграть тому, кто умеет говорить убедительнее.</p>
+            <h4>Что ты узнаешь</h4>
+            <ul class="lesson-list">
+              <li>Как влиять на решения без права приказывать — инструменты influence without authority</li>
+              <li>Метод двусторонней аргументации: сначала признай возражение, потом снеси его</li>
+              <li>Как строить питч для стейкхолдера за 10 минут лучше, чем большинство за 2 часа</li>
+              <li>Почему конкретное убеждает сильнее абстрактного</li>
+              <li>Как говорить «нет» так, чтобы тебя благодарили, а не обижались</li>
+            </ul>
+            <h4>Главная идея</h4>
+            <p>Продакт — профессия без власти. Зато есть кое-что сильнее: аргументы, данные и умение говорить так, чтобы люди сами хотели делать то, что нужно продукту.</p>
+            <p>Метод двусторонней аргументации: сначала назови самое сильное возражение сам, разбери его честно — и только потом покажи, почему всё равно прав. Люди чувствуют уважение и слушают дальше.</p>
+            <div class="module-case">
+              <div class="module-case-label">📍 Пример из жизни Туту</div>
+              <p>Команда «Отели» готовила питч на бюджет — хотели фильтр по типу питания. Стейкхолдеры скептичны: «у нас и так много фильтров». Продакт открыл словами: «Мы понимаем, что фильтры — это риск для конверсии. Вот данные о том, где пользователи уходят.» Возражение признано, данные говорили сами — бюджет одобрили за 20 минут.</p>
+            </div>
+            <div class="module-takeaway">💡 <strong>Запомни:</strong> Убеждают не слова — убеждают данные, упакованные в историю. Признай возражение первым — и ты уже выиграл половину разговора.</div>
+            <div class="det-story"><div class="det-inner">  <div class="det-scene">
+    <span class="det-badge">🔍 Расследование</span>
+    <div class="det-narrative"><p>Пятница, 16:30. Переговорка «Москва». Дима входит с флешкой. 40 слайдов. Тема: переход на новый технический стек. Дима — за. Лена — против. Антон принимает решение, но без формальной власти над выбором.</p><p>На слайде 31 Лена поднимает руку: <em>— Ты упомянул, что риск миграции данных минимальный. Почему?</em> Дима переключает на слайд 34. <em>— Мы использовали похожую миграцию в 2022 году.</em></p><p><em>— Но тогда было 200 тысяч пользователей. Сейчас — 2.4 миллиона. Это другой масштаб.</em></p><p>Тишина.</p></div>
+  </div>
+  <div class="det-clues">
+    <div class="det-clue-label">📋 Улики на столе</div>
+    <ul>
+      <li>40 слайдов — максимальная подготовка, но без признания контраргументов</li>
+      <li>Лена задала один конкретный вопрос с данными — и выявила реальный риск</li>
+      <li>Дима проигнорировал вопрос, переключив слайд</li>
+      <li>Двусторонняя аргументация: признание сильного возражения повышает доверие</li>
+    </ul>
+  </div>
+  <div class="det-choices" data-module="hard-01">
+    <div class="det-choice-label">🤔 Ты — Антон. Как помочь команде прийти к решению?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">А — Поддержать Диму: у него больше данных и детальная подготовка</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Б — Попросить Диму прямо ответить на вопрос Лены про масштаб — и только потом двигаться дальше</button>
+    <button class="det-btn" data-letter="В" data-result="wrong">В — Предложить голосование команды: пусть большинство решит</button>
+  </div>
+  <div class="det-reveal det-reveal-0" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p>Через неделю Лена приходит к Антону с двумя страницами: три компании с похожей миграцией при аудитории больше миллиона. Два из трёх — критические инциденты. <em>— Дима не ответил на мой вопрос. Он переключил слайд.</em></p><p class="det-moral">Объём аргументации не равен её силе. Тот, кто признаёт сильное возражение — убедительнее того, кто делает вид, что вопроса не было.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-1" style="display:none">
+    <div class="det-result-badge right">✅ Верно</div>
+    <div class="det-story-continue"><p><em>— Дима, вопрос Лены про масштаб важен. У тебя есть ответ?</em> Дима честно: <em>— Нет. Я опирался на 2022, но не проверял при нынешней аудитории. Это белое пятно в анализе.</em></p><p>Антон: <em>— Дима, берёшь неделю. Лена — поделись кейсами. Решение на следующей неделе.</em> Через неделю — поэтапный подход с буфером в три месяца. Лена соглашается. Команда доверяет процессу.</p><p class="det-moral">Влияние без власти — это искусство создавать пространство для честного разговора. Признание белых пятен вызывает больше доверия, чем вид, что их нет.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-2" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p>Четыре за переход, три против. Лена после: <em>— Вопрос про масштаб так и не получил ответа. Мы проголосовали, не зная ответа на ключевой риск.</em> Три месяца спустя — в середине миграции — именно та проблема, о которой говорила Лена.</p><p class="det-moral">Голосование — плохой инструмент для технических решений с неотвеченными экспертными вопросами. «Большинство» не делает неизвестный риск известным.</p></div>
+  </div></div></div>
+          </div>
+        </div>
+
+        <div class="module-item" onclick="toggleModule(this)">
+          <div class="module-header">
+            <div class="module-num hard">02</div>
+            <div class="module-title">Лидерство и работа с командой</div>
+            <div class="module-dur">~65 мин</div>
+            <div class="module-arrow">▶</div>
+          </div>
+          <div class="module-body">
+            <p class="module-hook">Команда не работает на тебя — она нанимает тебя. Понял разницу? Тогда поехали.</p>
+            <h4>Что ты узнаешь</h4>
+            <ul class="lesson-list">
+              <li>Что значит «лидерство без власти» — и почему это суперсила, а не ограничение</li>
+              <li>Как использовать OKR для выравнивания, а не для контроля</li>
+              <li>Что твоя команда на самом деле «нанимает тебя делать» — JTBD-линза на роль PM</li>
+              <li>Как говорить с разработчиками, дизайнерами и аналитиками на их языке</li>
+              <li>Как создать среду, где люди делают лучшее в своей жизни</li>
+            </ul>
+            <h4>Главная идея</h4>
+            <p>Применим JTBD к себе. Твоя команда нанимает тебя на работу. Честные ответы: «Мы нанимаем PM, чтобы у нас был кто-то, кто говорит "нет" новым хотелкам и защищает наш фокус.»</p>
+            <p>OKR — один из самых часто изнасилованных инструментов. Когда команда сама участвует в формулировке целей — они становятся не директивой, а общим договором. Директиву исполняют. Договор защищают.</p>
+            <div class="module-case">
+              <div class="module-case-label">📍 Пример из жизни Туту</div>
+              <p>В команде ЖД-билетов конфликт: разработчики хотели рефакторинг, бизнес — новые фичи. Продакт не стал арбитром — собрал сессию OKR. Сформулировали один KR: «Снизить время от первого визита до купленного билета с 7 до 4 минут». Это выравняло всех. Конфликт исчез.</p>
+            </div>
+            <div class="module-takeaway">💡 <strong>Запомни:</strong> Твоя команда нанимает тебя, чтобы у их работы был смысл и направление. OKR без числовых KR — генератор конфликтов.</div>
+            <div class="det-story"><div class="det-inner">  <div class="det-scene">
+    <span class="det-badge">🔍 Расследование</span>
+    <div class="det-narrative"><p>Восемь недель. Команда ЖД-билетов не может договориться о приоритетах. В чате — 340 непрочитанных. Семь «финальных» версий роадмапа, каждая кем-то оспаривается.</p><p>OKR на квартал: «Objective: Сделать покупку ЖД-билетов лучшим опытом на рынке». Key Results: не прописаны.</p><p><em>— Мы говорили про «лучший опыт» — это скорость покупки, — настаивает Вася.</em></p><p><em>— Нет, это выбор маршрутов, — возражает Катя.</em></p><p><em>— Это вообще про NPS, — вступает Марина.</em></p><p>Антон сидит и смотрит на трёх людей, которые говорят об одном слове и имеют в виду три разные вещи. Квартал уже наполовину прошёл.</p></div>
+  </div>
+  <div class="det-clues">
+    <div class="det-clue-label">📋 Улики на столе</div>
+    <ul>
+      <li>Objective красивый, но без числовых Key Results</li>
+      <li>Три члена команды понимают «лучший опыт» тремя разными способами — все логично</li>
+      <li>Восемь недель конфликта = половина квартала потеряна</li>
+      <li>OKR без числовых KR — источник бесконечных споров</li>
+    </ul>
+  </div>
+  <div class="det-choices" data-module="hard-02">
+    <div class="det-choice-label">🤔 Ты — Антон. Как разрубить гордиев узел?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">А — Провести голосование: пусть команда выберет</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Б — Остановить спор и переписать OKR: добавить числовые Key Results для каждой интерпретации</button>
+    <button class="det-btn" data-letter="В" data-result="partial">В — Эскалировать к Саше: пусть CPO решит</button>
+  </div>
+  <div class="det-reveal det-reveal-0" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p>Победила «скорость» с перевесом в один голос. Катя молчит три дня, потом пишет, что её данные «были проигнорированы». Через квартал скорость +12%, но Катя на ретро приносит данные: пользователи, не нашедшие маршрут, отвалились совсем.</p><p class="det-moral">Голосование не заменяет анализ. OKR без числовых KR порождает конфликты, где каждый прав — и решить это можно только данными.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-1" style="display:none">
+    <div class="det-result-badge right">✅ Верно</div>
+    <div class="det-story-continue"><p>Антон берёт маркер и пишет три варианта KR: «Время от поиска до покупки — минус 30%»; «Количество маршрутов в поиске — плюс 40%»; «NPS ЖД — рост с 38 до 50». <em>— Три разные интерпретации «лучшего» в числах. Теперь вопрос не «что значит лучший» — а «какой KR даст больший бизнес-эффект». Этот разговор можно закончить.</em></p><p>Через два часа — решение. Следующий квартал — с числами с первого дня. Конфликтов — ноль.</p><p class="det-moral">«Лучший опыт» каждый понимает по-своему. Ненормально не переводить это в числа до старта квартала. Число убивает спор.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-2" style="display:none">
+    <div class="det-result-badge partial">⚡ Частично</div>
+    <div class="det-story-continue"><p>Саша приходит, говорит: <em>— Скорость покупки. Это наша дифференциация.</em> Конфликт закрыт административно. Квартал нормальный. Но на ретро Катя: <em>— Мы потратили восемь недель на спор, который Саша закрыл за пять минут. Почему не пришли к нему в первую неделю?</em> OKR по-прежнему без числовых KR. Следующий квартал начнётся так же.</p><p class="det-moral">Эскалация лечит симптом, а не причину. Настоящее решение — изменить то, как формулируются цели.</p></div>
+  </div></div></div>
+          </div>
+        </div>
+
+        <div class="module-item" onclick="toggleModule(this)">
+          <div class="module-header">
+            <div class="module-num hard">03</div>
+            <div class="module-title">Карьерный путь продакта</div>
+            <div class="module-dur">~55 мин</div>
+            <div class="module-arrow">▶</div>
+          </div>
+          <div class="module-body">
+            <p class="module-hook">Ты не просто растёшь по грейдам — ты меняешь работу, которую делаешь для компании. Это совсем другая игра.</p>
+            <h4>Что ты узнаешь</h4>
+            <ul class="lesson-list">
+              <li>Чем реально отличается PM от Senior PM от Group PM — не по названию, а по работе</li>
+              <li>JTBD-подход к своей карьере: какую работу нанимает тебя делать работодатель</li>
+              <li>Как сформулировать точку роста — Point A → Point B — честно и без самообмана</li>
+              <li>Что качать в hard skills, что в soft — и в каком порядке</li>
+              <li>Где в карьере продакта засады, а где лифты вверх</li>
+            </ul>
+            <h4>Главная идея</h4>
+            <p>На уровне PM: «Возьми хаос требований и преврати в понятные задачи.» На уровне Senior PM: «Найди, где теряем пользователей, предложи решение, защити, доведи до результата.» На уровне Group PM: «Построй систему, в которой команды движутся в одном направлении.» Это буквально другая профессия на каждом уровне.</p>
+            <div class="module-case">
+              <div class="module-case-label">📍 Пример из жизни Туту</div>
+              <p>Продакт Туту пришёл уровнем PM, через полтора года вырос до Senior. Что изменилось? Не только масштаб — тип работы. Раньше нанимали «структурировать и делать». Теперь — «находить, где теряем, и предлагать, куда идти». Он сам: «Я перестал ждать задачи и начал сам приносить проблемы.»</p>
+            </div>
+            <div class="module-takeaway">💡 <strong>Запомни:</strong> На каждом грейде тебя нанимают делать другую работу. Разрыв между тем, что делаешь сейчас, и тем, что ждут на следующем уровне — это твой план развития.</div>
+            <div class="det-story"><div class="det-inner">  <div class="det-scene">
+    <span class="det-badge">🔍 Расследование</span>
+    <div class="det-narrative"><p>Вася — лучший PM в команде автобусных билетов. Метрики наизусть. Спринты всегда в срок. Команда его любит. Дима: «С Васей я никогда не блокируюсь».</p><p>Год назад Вася подал заявку на Senior PM. Саша сказал: рано. Полгода прошло. Снова подал. Снова отказ. Они сидят в переговорке.</p><p><em>— Вася, ты отличный PM. Это правда. Но Senior PM — это другая работа. И я не вижу, что ты делаешь эту работу.</em></p><p>Вася не понимает. Он делает всё, что от него требуется. Делает это хорошо. Разве этого не достаточно?</p></div>
+  </div>
+  <div class="det-clues">
+    <div class="det-clue-label">📋 Улики на столе</div>
+    <ul>
+      <li>Вася идеально справляется с текущей работой PM, но не выходит за её рамки</li>
+      <li>Senior PM отвечает за развитие других PM и за продуктовую стратегию команды</li>
+      <li>Вася не инициирует ничего за пределами своего бэклога</li>
+      <li>Карьерный рост — не «делать то же самое лучше», а «делать другую работу»</li>
+    </ul>
+  </div>
+  <div class="det-choices" data-module="hard-03">
+    <div class="det-choice-label">🤔 Ты — Вася. Что изменить?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">А — Работать ещё лучше: больше задач, выше качество спринтов</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Б — Спросить Сашу прямо: что именно делает Senior PM, чего не делает PM — и начать это делать</button>
+    <button class="det-btn" data-letter="В" data-result="partial">В — Найти другую компанию, где дадут Senior без таких требований</button>
+  </div>
+  <div class="det-reveal det-reveal-0" style="display:none">
+    <div class="det-result-badge wrong">❌ Не то</div>
+    <div class="det-story-continue"><p>Ещё более аккуратный бэклог. Ещё более чёткие спринты. Через полгода снова заявка. Саша мягко: <em>— Ты стал ещё лучшим PM. Но Senior — это не «лучше делать то же самое». Ты ни разу не помог Насте или Кате. Не поднимал стратегических вопросов. Я не вижу senior-работу.</em></p><p class="det-moral">Карьерный рост — смена работы. Больше старания в неправильном направлении — более быстрое движение не туда.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-1" style="display:none">
+    <div class="det-result-badge right">✅ Верно</div>
+    <div class="det-story-continue"><p>Саша: <em>— Три вещи. Первое: Senior видит не только свой продукт — ты ни разу не говорил с Настей о её проблемах. Второе: формирует продуктовую культуру — менторит, делится кейсами. Третье: задаёт стратегические вопросы — почему вообще делаем автобусы, а не фокусируемся на ЖД.</em></p><p>Вася начинает с малого: раз в две недели ревью гипотез в общей команде. Настя через квартал: <em>— Ты помог мне избежать ровно той же ошибки, что я делала в прошлом году.</em> Ещё через полгода — Senior PM.</p><p class="det-moral">Чтобы вырасти, нужно знать, чем отличается следующая работа — и начать делать именно её. Без смелости признать, что текущих навыков недостаточно, любое «работать лучше» — топтание на месте.</p></div>
+  </div>
+  <div class="det-reveal det-reveal-2" style="display:none">
+    <div class="det-result-badge partial">⚡ Частично</div>
+    <div class="det-story-continue"><p>Вася уходит в компанию, где дают Senior на похожем масштабе. Дима: <em>— Мы тебя потеряем.</em> В новой компании через три месяца начинают намекать: «Senior должен думать стратегически». Потому что проблема была не в Туту. Тайтл можно купить — работу нужно освоить.</p><p class="det-moral">Смена компании ради тайтла не меняет набор навыков. Если не делаешь работу следующего уровня — новый работодатель обнаружит это так же, как старый.</p></div>
+  </div></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ OODA ════════════════════════════════════════════════════════════════════════ -->
+<section class="b-ooda" id="ooda">
+  <div class="container">
+    <div class="fade-in">
+      <div class="eyebrow">Ключевой фреймворк</div>
+      <h2 class="section-title">OODA Loop — как мыслят лучшие продакты</h2>
+      <p class="section-sub">Фреймворк, придуманный военным лётчиком. Работает в продукте лучше любого другого.</p>
+    </div>
+    <div class="ooda-grid fade-in">
+      <div class="ooda-card">
+        <div class="ooda-letter">O</div>
+        <h4>Observe — Наблюдай</h4>
+        <p>Собирай сигналы отовсюду: аналитика, звонки поддержки, App Store reviews, данные воронки. Не только то, что подтверждает твою гипотезу.</p>
+      </div>
+      <div class="ooda-card">
+        <div class="ooda-letter">O</div>
+        <h4>Orient — Ориентируйся</h4>
+        <p>Самый сложный шаг. Интерпретируй данные через job graph и понимание триггеров. Здесь опытный продакт отличается от джуна.</p>
+      </div>
+      <div class="ooda-card">
+        <div class="ooda-letter">D</div>
+        <h4>Decide — Решай</h4>
+        <p>Выбор ставки: что делать, что не делать, что проверить. Решение принимается с неполными данными — всегда. Это нормально.</p>
+      </div>
+      <div class="ooda-card">
+        <div class="ooda-letter">A</div>
+        <h4>Act — Действуй</h4>
+        <p>Быстро, дёшево, с возможностью откатить. Цикл — неделя-две. Если стратегия обновляется раз в квартал — ты уже отстал.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ REVIEWS ════════════════════════════════════════════════════════════════════ -->
+<section class="b-reviews" id="reviews">
+  <div class="container">
+    <div class="text-center fade-in">
+      <div class="eyebrow">Отзывы</div>
+      <h2 class="section-title">Говорят те, кто уже прошёл</h2>
+    </div>
+    <div class="reviews-grid fade-in">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p>«Пришла с позиции HR. Прошла лёгкий уровень за вечер. Теперь понимаю, что продакты говорят на планёрках — и почему они так долго что-то решают прежде чем что-то делать. Спойлер: это не лень, это процесс.»</p>
+        <div class="review-author">
+          <div class="review-avatar">А</div>
+          <div>
+            <div class="review-name">Анна К.</div>
+            <div class="review-role">HR Business Partner, Туту</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p>«OODA Loop перевернул моё понимание стратегии. Раньше думал, что стратегия = годовой документ. Теперь знаю: это живой процесс, который повторяется каждую неделю.»</p>
+        <div class="review-author">
+          <div class="review-avatar">М</div>
+          <div>
+            <div class="review-name">Михаил Д.</div>
+            <div class="review-role">Product Manager, Туту</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p>«Хардовый уровень — огонь. Особенно блок про лидерство без погон. Сразу применил несколько идей в работе с командой. И режим детектива — это отдельный кайф.»</p>
+        <div class="review-author">
+          <div class="review-avatar">С</div>
+          <div>
+            <div class="review-name">Сергей В.</div>
+            <div class="review-role">Senior Product Manager, Туту</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HACKATHON ═══════════════════════════════════════════════════════════════════ -->
+<section class="b-hackathon" id="hackathon">
+  <div class="container">
+    <div class="text-center fade-in">
+      <div class="eyebrow">Практика</div>
+      <h2 class="section-title">Хакатон: реши задачу — получи честный фидбек</h2>
+      <p class="section-sub">Берёшь реальный кейс из жизни Туту, пишешь решение — AI-эксперт разбирает его по косточкам. Не «молодец», а конкретно: что сильно, что слабо, что упустил.</p>
+    </div>
+
+    <!-- API setup -->
+    <div class="hack-api-wrap fade-in" id="apiSetup">
+      <div class="hack-api-card">
+        <div class="hack-api-icon">🔑</div>
+        <h3>Подключи AI-проверку</h3>
+        <p>Введи API-ключ от LLM Gateway — он нужен для проверки твоего решения. Ключ хранится только в браузере.</p>
+        <div class="hack-input-row">
+          <input type="password" id="apiKeyInput" placeholder="Вставь API-ключ от LLM Gateway" class="hack-input" />
+          <button class="btn btn-primary btn-lg" onclick="saveApiKey()">Сохранить</button>
+        </div>
+        <p class="hack-hint">Получить ключ: канал <strong>#эксплуатация-openshift</strong> в Slack</p>
+        <button class="hack-api-info-btn" onclick="openLlmModal()">ℹ️ Как работает AI-проверка?</button>
+      </div>
+    </div>
+
+    <!-- cases -->
+    <div id="hackCases" style="display:none">
+      <div class="hack-tabs">
+        <button class="hack-tab active" onclick="switchCase(0,event)">🟢 Кейс 1 — Базовый</button>
+        <button class="hack-tab" onclick="switchCase(1,event)">🟡 Кейс 2 — Средний</button>
+        <button class="hack-tab" onclick="switchCase(2,event)">🔴 Кейс 3 — Сложный</button>
+        <button class="hack-settings-btn" onclick="resetApiKey()" title="Сменить API-ключ">⚙️</button>
+      </div>
+
+      <!-- case 0 -->
+      <div class="hack-case active" id="case-0">
+        <div class="hack-case-header">
+          <span class="hack-badge easy">🟢 Лёгкий · ~30 мин</span>
+          <span class="hack-topic">Метрики и цели</span>
+        </div>
+        <div class="hack-scenario">
+          <h3>Ситуация</h3>
+          <p>Ты — продакт направления «Электрички» в Туту. Команда хочет улучшить конверсию на странице расписания. Сейчас 68% пользователей смотрят расписание, но не переходят к покупке.</p>
+          <div class="hack-context">
+            <strong>Что ты знаешь:</strong>
+            <ul>
+              <li>MAU страницы расписания: 2.1 млн пользователей</li>
+              <li>Конверсия в покупку: 32% от тех, кто перешёл на страницу билетов</li>
+              <li>Основная жалоба из кастдева: «не понимаю, какой поезд выбрать»</li>
+              <li>Конкурент Яндекс.Электрички показывает рекомендацию «Оптимальный»</li>
+            </ul>
+          </div>
+        </div>
+        <div class="hack-task">
+          <h3>Задание</h3>
+          <ol>
+            <li>Сформулируй цель на квартал в формате OKR (1 Objective + 2–3 Key Results)</li>
+            <li>Предложи одну конкретную гипотезу для улучшения конверсии</li>
+            <li>Опиши метрику успеха и как будешь её измерять</li>
+          </ol>
+        </div>
+        <div class="hack-answer">
+          <label class="hack-label">Твоё решение:</label>
+          <textarea class="hack-textarea" id="answer-0" placeholder="Напиши ответ здесь...&#10;&#10;Например:&#10;Objective: ...&#10;KR1: ...&#10;KR2: ...&#10;&#10;Гипотеза: ...&#10;&#10;Метрика: ..."></textarea>
+          <div class="hack-actions">
+            <span class="hack-word-count" id="wc-0">0 слов</span>
+            <button class="btn btn-primary btn-md hack-submit" onclick="submitAnswer(0)" id="btn-0">
+              <span>Отправить на AI-проверку →</span>
+            </button>
+          </div>
+        </div>
+        <div class="hack-result" id="result-0"></div>
+      </div>
+
+      <!-- case 1 -->
+      <div class="hack-case" id="case-1">
+        <div class="hack-case-header">
+          <span class="hack-badge medium">🟡 Средний · ~45 мин</span>
+          <span class="hack-topic">Discovery и стратегия</span>
+        </div>
+        <div class="hack-scenario">
+          <h3>Ситуация</h3>
+          <p>Туту запускает «Туристические маршруты»: готовые однодневные поездки с электричкой + активностью. Первые данные через 3 недели показали неожиданное.</p>
+          <div class="hack-context">
+            <strong>Данные после запуска:</strong>
+            <ul>
+              <li>DAU фичи: 12 000 (ожидали 40 000)</li>
+              <li>Конверсия в бронирование: 8.3% (выше рынка, ожидали 5%)</li>
+              <li>60% бронирований — пары 25–35 лет, хотя целились в семьи с детьми</li>
+              <li>NPS: +42, частые комментарии «наконец-то не надо самому планировать»</li>
+            </ul>
+          </div>
+        </div>
+        <div class="hack-task">
+          <h3>Задание</h3>
+          <ol>
+            <li>Применяя OODA Loop — опиши наблюдения и ориентирование</li>
+            <li>Прими решение: pivot, persevere или kill — обоснуй через данные</li>
+            <li>Предложи следующие 2–3 конкретных действия</li>
+          </ol>
+        </div>
+        <div class="hack-answer">
+          <label class="hack-label">Твоё решение:</label>
+          <textarea class="hack-textarea" id="answer-1" placeholder="Observe: что я вижу в данных...&#10;Orient: что это значит...&#10;Decide: моё решение...&#10;Act: следующие шаги..."></textarea>
+          <div class="hack-actions">
+            <span class="hack-word-count" id="wc-1">0 слов</span>
+            <button class="btn btn-primary btn-md hack-submit" onclick="submitAnswer(1)" id="btn-1">
+              <span>Отправить на AI-проверку →</span>
+            </button>
+          </div>
+        </div>
+        <div class="hack-result" id="result-1"></div>
+      </div>
+
+      <!-- case 2 -->
+      <div class="hack-case" id="case-2">
+        <div class="hack-case-header">
+          <span class="hack-badge hard">🔴 Сложный · ~60 мин</span>
+          <span class="hack-topic">Лидерство и коммуникация</span>
+        </div>
+        <div class="hack-scenario">
+          <h3>Ситуация</h3>
+          <p>Ты — Senior PM в Туту. Тимлид хочет закрыть «Автобусы» и перебросить всю команду на авиа. Ты считаешь это стратегической ошибкой. Встреча через 2 часа.</p>
+          <div class="hack-context">
+            <strong>Факты, которые у тебя есть:</strong>
+            <ul>
+              <li>Автобусы: GMV вырос на 34% за год, маржинальность 18%</li>
+              <li>Авиа: конкурентный рынок, маржинальность 6%, доля рынка Туту — 3%</li>
+              <li>Автобусы — уникальная ниша, NPS +51</li>
+              <li>Тимлид получил давление сверху: «нужно расти в авиа»</li>
+            </ul>
+          </div>
+        </div>
+        <div class="hack-task">
+          <h3>Задание</h3>
+          <ol>
+            <li>Напиши ключевые аргументы для защиты направления</li>
+            <li>Предложи альтернативное решение, учитывающее цель тимлида</li>
+            <li>Как выстроишь разговор: с чего начнёшь, как обойдёшь защитную реакцию</li>
+          </ol>
+        </div>
+        <div class="hack-answer">
+          <label class="hack-label">Твоё решение:</label>
+          <textarea class="hack-textarea" id="answer-2" placeholder="Аргументы:&#10;1. ...&#10;&#10;Альтернативное решение: ...&#10;&#10;Структура разговора: ..."></textarea>
+          <div class="hack-actions">
+            <span class="hack-word-count" id="wc-2">0 слов</span>
+            <button class="btn btn-primary btn-md hack-submit" onclick="submitAnswer(2)" id="btn-2">
+              <span>Отправить на AI-проверку →</span>
+            </button>
+          </div>
+        </div>
+        <div class="hack-result" id="result-2"></div>
+      </div>
+
+    </div><!-- /hackCases -->
+  </div>
+</section>
+
+<!-- ══ CTA ════════════════════════════════════════════════════════════════════════ -->
+<section class="b-cta">
+  <div class="container">
+    <h2>Готов начать?</h2>
+    <p>Выбери уровень и погружайся. Весь курс бесплатен для сотрудников Туту.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a href="#levels" class="btn btn-white btn-lg">Начать обучение →</a>
+      <a href="#curriculum" class="btn btn-ghost btn-lg">Смотреть программу</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═════════════════════════════════════════════════════════════════════ -->
+<footer class="b-footer">
+  <div class="container">
+    <div class="b-footer__grid">
+      <div>
+        <div class="b-footer__logo-wrap">
+          <img class="b-footer__logo-img"
+               src="https://static.tass.ru/static/tutu.ru/static/1.0.0.13478/img/logo.svg"
+               alt="Туту"
+               onerror="this.style.display='none'">
+          <div class="b-footer__logo-sep"></div>
+          <span class="b-footer__logo-label">Обучение</span>
+        </div>
+        <p class="b-footer__desc">Продуктовое мышление для всей команды Туту — от аналитика до разработчика. Три уровня, реальные кейсы, никакой воды.</p>
+      </div>
+      <div class="b-footer__col">
+        <h5>Уровни</h5>
+        <ul>
+          <li><a href="#level-easy">🟢 Лёгкий</a></li>
+          <li><a href="#level-medium">🟡 Средний</a></li>
+          <li><a href="#level-hard">🔴 Хардовый</a></li>
+        </ul>
+      </div>
+      <div class="b-footer__col">
+        <h5>Фреймворки</h5>
+        <ul>
+          <li><a href="#ooda">OODA Loop</a></li>
+          <li><a href="#curriculum">Программа</a></li>
+          <li><a href="#reviews">Отзывы</a></li>
+        </ul>
+      </div>
+      <div class="b-footer__col">
+        <h5>Практика</h5>
+        <ul>
+          <li><a href="#hackathon">Хакатон</a></li>
+          <li><a href="https://www.tutu.ru" target="_blank">Туту.ру</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="b-footer__bottom">
+      <span>© 2025 Туту — внутреннее обучение</span>
+      <span>Только для сотрудников компании</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ LLM GATEWAY MODAL ══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="llmModal" onclick="closeLlmModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h2>🤖 Как работает AI-проверка</h2>
+      <button class="modal-close" onclick="closeLlmModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="llm-hero">
+        <div class="llm-hero__model">claude-haiku-4-5</div>
+        <div class="llm-hero__provider">Anthropic Claude via LLM Gateway · dom.tutu.ru</div>
+        <div class="llm-hero__tags">
+          <span class="llm-tag">200K контекст</span>
+          <span class="llm-tag">Быстрые ответы</span>
+          <span class="llm-tag">JSON output</span>
+          <span class="llm-tag">Корпоративный доступ</span>
+        </div>
+      </div>
+
+      <div class="llm-section">
+        <h3>Параметры модели</h3>
+        <div class="llm-params">
+          <div class="llm-param">
+            <div class="llm-param__label">Модель</div>
+            <div class="llm-param__val">claude-haiku-4-5-20251001</div>
+          </div>
+          <div class="llm-param">
+            <div class="llm-param__label">Max tokens</div>
+            <div class="llm-param__val">800</div>
+          </div>
+          <div class="llm-param">
+            <div class="llm-param__label">Gateway URL</div>
+            <div class="llm-param__val">llm-gateway.tutu.ru</div>
+          </div>
+          <div class="llm-param">
+            <div class="llm-param__label">Версия API</div>
+            <div class="llm-param__val">anthropic-version 2023-06-01</div>
+          </div>
+          <div class="llm-param">
+            <div class="llm-param__label">Формат ответа</div>
+            <div class="llm-param__val">Строгий JSON</div>
+          </div>
+          <div class="llm-param">
+            <div class="llm-param__label">Хранение ключа</div>
+            <div class="llm-param__val">Только в браузере (localStorage)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="llm-section">
+        <h3>Системный промпт (зашит во фронте)</h3>
+        <div class="llm-prompt">
+          <pre>Ты — опытный ментор продактов в Туту.
+Оцени ответ участника на продуктовый кейс.
+
+<code>КЕЙС:</code> [описание ситуации из Туту]
+
+<code>ЗАДАНИЕ:</code> [конкретные вопросы для участника]
+
+<code>ОТВЕТ УЧАСТНИКА:</code>
+{answer}
+
+Дай оценку по критериям (каждый от 1 до 5).
+Формат ответа — строго JSON:
+{
+  "scores": { "criterion1": &lt;1-5&gt;, ... },
+  "overall": "Отлично / Хорошо / Есть над чем работать",
+  "icon": "&lt;emoji&gt;",
+  "strengths": "&lt;что сделано хорошо, 1-2 предл.&gt;",
+  "improvements": "&lt;что улучшить, 1-2 предл.&gt;",
+  "tip": "&lt;конкретный совет или вопрос&gt;"
+}</pre>
+        </div>
+      </div>
+
+      <div class="llm-section">
+        <h3>Как это работает — шаг за шагом</h3>
+        <div class="llm-flow">
+          <div class="llm-flow-step">
+            <div class="llm-flow-num">1</div>
+            <div class="llm-flow-text"><strong>Участник пишет ответ</strong> в текстовое поле и нажимает «Отправить на AI-проверку»</div>
+          </div>
+          <div class="llm-flow-step">
+            <div class="llm-flow-num">2</div>
+            <div class="llm-flow-text"><strong>Браузер формирует запрос:</strong> системный промпт с кейсом + ответ участника → POST на LLM Gateway Туту</div>
+          </div>
+          <div class="llm-flow-step">
+            <div class="llm-flow-num">3</div>
+            <div class="llm-flow-text"><strong>Gateway проксирует запрос</strong> в Anthropic API. Авторизация — корпоративный API-ключ участника</div>
+          </div>
+          <div class="llm-flow-step">
+            <div class="llm-flow-num">4</div>
+            <div class="llm-flow-text"><strong>Модель возвращает JSON</strong> с оценками по критериям, сильными сторонами, рекомендациями и советом</div>
+          </div>
+          <div class="llm-flow-step">
+            <div class="llm-flow-num">5</div>
+            <div class="llm-flow-text"><strong>Фронт рендерит результат:</strong> звёздный рейтинг, цитаты из ответа, конкретный вопрос для размышления</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="llm-section">
+        <h3>Критерии оценки по кейсам</h3>
+        <div class="llm-params">
+          <div class="llm-param">
+            <div class="llm-param__label">Кейс 1 — Метрики и OKR</div>
+            <div class="llm-param__val" style="font-size:13px;font-weight:600">Качество OKR · Гипотеза · Метрика</div>
+          </div>
+          <div class="llm-param">
+            <div class="llm-param__label">Кейс 2 — OODA и стратегия</div>
+            <div class="llm-param__val" style="font-size:13px;font-weight:600">OODA-анализ · Решение · Следующие шаги</div>
+          </div>
+          <div class="llm-param" style="grid-column:1/-1">
+            <div class="llm-param__label">Кейс 3 — Лидерство</div>
+            <div class="llm-param__val" style="font-size:13px;font-weight:600">Аргументация · Альтернативное решение · Коммуникационная стратегия</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--c-bg-brand);border-radius:var(--r-lg);padding:16px 20px;border:1px solid rgba(125,113,255,.2)">
+        <p style="font-size:13px;color:var(--c-text-2);line-height:1.6;margin:0">
+          💡 <strong style="color:var(--c-text)">Для хакатона:</strong> подключи свой LLM Gateway и замени <code style="font-family:monospace;background:rgba(0,0,0,.06);padding:1px 5px;border-radius:3px">GATEWAY_URL</code> в коде страницы. Промпты уже зашиты во фронте и подстраиваются под каждый кейс автоматически.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ HACKATHON CONFIG ════════════════════════════════════════════════════════════
+const GATEWAY_URL = 'https://llm-gateway.tutu.ru/api/anthropic';
+const MODEL       = 'claude-haiku-4-5-20251001';
+
+const CASES = [
+  {
+    title: 'Кейс 1 — Метрики и OKR',
+    prompt: `Ты — опытный ментор продактов. Оцени ответ участника на продуктовый кейс.
+
+КЕЙС: Продакт направления «Электрички» в Туту. Нужно улучшить конверсию страницы расписания (68% смотрят, но не переходят к покупке). MAU 2.1 млн, конверсия в покупку 32%, жалобы: «не понимаю, какой поезд выбрать», конкурент показывает рекомендацию «Оптимальный».
+
+ЗАДАНИЕ: OKR на квартал (1 Objective + 2–3 KR), гипотеза для улучшения конверсии, метрика успеха.
+
+ОТВЕТ УЧАСТНИКА:
+{answer}
+
+Дай оценку по критериям (каждый от 1 до 5):
+1. Качество OKR (амбициозность, измеримость, связь с бизнесом)
+2. Гипотеза (конкретность, обоснованность, тестируемость)
+3. Метрика (правильность выбора, способ измерения)
+
+Формат ответа — строго JSON:
+{
+  "scores": { "okr": <1-5>, "hypothesis": <1-5>, "metric": <1-5> },
+  "overall": "<Отлично / Хорошо / Есть над чем работать / Нужно доработать>",
+  "icon": "<emoji>",
+  "strengths": "<1-2 предложения что сделано хорошо>",
+  "improvements": "<1-2 предложения что улучшить>",
+  "tip": "<один конкретный совет или вопрос>"
+}`
+  },
+  {
+    title: 'Кейс 2 — OODA и стратегия',
+    prompt: `Ты — опытный ментор продактов. Оцени ответ участника на продуктовый кейс.
+
+КЕЙС: Туту запустил «Туристические маршруты». Через 3 недели: DAU 12k (ожидали 40k), конверсия 8.3% (ожидали 5%), 60% покупателей — пары 25-35 лет (целились в семьи), NPS +42, комментарии «наконец-то не надо планировать».
+
+ЗАДАНИЕ: Применить OODA Loop, принять решение pivot/persevere/kill с обоснованием, предложить 2-3 следующих шага.
+
+ОТВЕТ УЧАСТНИКА:
+{answer}
+
+Оцени по критериям (каждый 1-5):
+1. OODA анализ (полнота наблюдений, глубина ориентирования)
+2. Качество решения (обоснованность, опора на данные)
+3. Следующие шаги (конкретность, приоритизация)
+
+Формат — строго JSON:
+{
+  "scores": { "ooda": <1-5>, "decision": <1-5>, "next_steps": <1-5> },
+  "overall": "<Отлично / Хорошо / Есть над чем работать / Нужно доработать>",
+  "icon": "<emoji>",
+  "strengths": "<1-2 предложения>",
+  "improvements": "<1-2 предложения>",
+  "tip": "<совет или вопрос>"
+}`
+  },
+  {
+    title: 'Кейс 3 — Лидерство',
+    prompt: `Ты — опытный ментор продактов. Оцени ответ участника.
+
+КЕЙС: Senior PM в Туту. Тимлид хочет закрыть «Автобусы» и перейти в авиа. Факты: Автобусы GMV+34%, маржа 18%, NPS+51 — уникальная ниша. Авиа: маржа 6%, доля 3%, конкурентный рынок. Тимлид под давлением сверху.
+
+ЗАДАНИЕ: Ключевые аргументы для защиты, альтернативное решение, структура разговора.
+
+ОТВЕТ УЧАСТНИКА:
+{answer}
+
+Оцени по критериям (каждый 1-5):
+1. Аргументация (структурированность, опора на данные, убедительность)
+2. Альтернативное решение (учёт интересов обеих сторон, реалистичность)
+3. Коммуникационная стратегия (эмпатия, структура диалога)
+
+Формат — строго JSON:
+{
+  "scores": { "arguments": <1-5>, "alternative": <1-5>, "communication": <1-5> },
+  "overall": "<Отлично / Хорошо / Есть над чем работать / Нужно доработать>",
+  "icon": "<emoji>",
+  "strengths": "<1-2 предложения>",
+  "improvements": "<1-2 предложения>",
+  "tip": "<совет или вопрос>"
+}`
+  }
+];
+
+const CRITERIA_NAMES = [
+  ['OKR', 'Гипотеза', 'Метрика'],
+  ['OODA', 'Решение', 'Следующие шаги'],
+  ['Аргументы', 'Альтернатива', 'Коммуникация']
+];
+
+// ══ STATE ═══════════════════════════════════════════════════════════════════════
+let currentCase = 0;
+
+// ══ INIT ════════════════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('tutu_llm_key');
+  if (saved) {
+    document.getElementById('apiSetup').style.display = 'none';
+    document.getElementById('hackCases').style.display = 'block';
+  }
+  for (let i = 0; i < 3; i++) {
+    document.getElementById('answer-' + i).addEventListener('input', () => updateWordCount(i));
+  }
+  document.getElementById('apiKeyInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') saveApiKey();
+  });
+});
+
+// ══ API KEY ══════════════════════════════════════════════════════════════════════
+function saveApiKey() {
+  const val = document.getElementById('apiKeyInput').value.trim();
+  if (!val) return;
+  localStorage.setItem('tutu_llm_key', val);
+  document.getElementById('apiSetup').style.display = 'none';
+  document.getElementById('hackCases').style.display = 'block';
+}
+
+function resetApiKey() {
+  localStorage.removeItem('tutu_llm_key');
+  document.getElementById('apiSetup').style.display = 'flex';
+  document.getElementById('hackCases').style.display = 'none';
+  document.getElementById('apiKeyInput').value = '';
+}
+
+// ══ TABS ══════════════════════════════════════════════════════════════════════════
+function switchCase(idx, e) {
+  currentCase = idx;
+  document.querySelectorAll('.hack-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.hack-case').forEach((c, i) => c.classList.toggle('active', i === idx));
+}
+
+function switchTab(level, e) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + level).classList.add('active');
+  e.target.classList.add('active');
+}
+
+// ══ MODULES ══════════════════════════════════════════════════════════════════════
+function toggleModule(el) {
+  el.classList.toggle('open');
+}
+
+// ══ WORD COUNT ═══════════════════════════════════════════════════════════════════
+function updateWordCount(idx) {
+  const text = document.getElementById('answer-' + idx).value.trim();
+  const words = text ? text.split(/\s+/).length : 0;
+  document.getElementById('wc-' + idx).textContent = words + ' ' + wordForm(words);
+}
+function wordForm(n) {
+  if (n % 10 === 1 && n % 100 !== 11) return 'слово';
+  if ([2,3,4].includes(n % 10) && ![12,13,14].includes(n % 100)) return 'слова';
+  return 'слов';
+}
+
+// ══ SUBMIT ════════════════════════════════════════════════════════════════════════
+async function submitAnswer(idx) {
+  const answer = document.getElementById('answer-' + idx).value.trim();
+  if (answer.length < 30) { alert('Напиши ответ подробнее — хотя бы несколько предложений.'); return; }
+  const apiKey = localStorage.getItem('tutu_llm_key');
+  if (!apiKey) { resetApiKey(); return; }
+
+  const btn = document.getElementById('btn-' + idx);
+  btn.classList.add('loading');
+  btn.innerHTML = '<span class="spinner"></span><span>AI анализирует...</span>';
+
+  const resultEl = document.getElementById('result-' + idx);
+  resultEl.className = 'hack-result';
+  resultEl.innerHTML = '';
+
+  try {
+    const prompt = CASES[idx].prompt.replace('{answer}', answer);
+    const res = await fetch(GATEWAY_URL + '/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({ model: MODEL, max_tokens: 800, messages: [{ role: 'user', content: prompt }] })
+    });
+    if (!res.ok) throw new Error('Ошибка API: ' + res.status + ' — ' + (await res.text()).slice(0, 200));
+    const data = await res.json();
+    const raw = data.content[0].text;
+    const match = raw.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('Неверный формат ответа от AI');
+    renderResult(idx, JSON.parse(match[0]));
+  } catch (err) {
+    resultEl.innerHTML = `<div class="hack-error">⚠️ ${err.message}</div>`;
+    resultEl.classList.add('visible');
+  } finally {
+    btn.classList.remove('loading');
+    btn.innerHTML = '<span>Отправить на AI-проверку →</span>';
+  }
+}
+
+function renderResult(idx, r) {
+  const scores = r.scores || {};
+  const criteriaNames = CRITERIA_NAMES[idx];
+  const scoreItems = Object.entries(scores).map(([key, val], i) => {
+    const stars = '★'.repeat(val) + '☆'.repeat(5 - val);
+    return `<div class="hack-score-item">
+      <span class="hack-score-label">${criteriaNames[i] || key}</span>
+      <span class="hack-score-val">${stars} ${val}/5</span>
+    </div>`;
+  }).join('');
+
+  const resultEl = document.getElementById('result-' + idx);
+  resultEl.innerHTML = `
+    <div class="hack-result-inner">
+      <div class="hack-result-header">
+        <div class="hack-result-icon">${r.icon || '🤖'}</div>
+        <div>
+          <div class="hack-result-title">${r.overall || 'Оценка получена'}</div>
+          <div style="font-size:12px;color:var(--c-text-3);margin-top:2px">${CASES[idx].title}</div>
+        </div>
+      </div>
+      <div class="hack-scores">${scoreItems}</div>
+      <div class="hack-feedback">
+        ${r.strengths   ? `<p>✅ <strong>Сильные стороны:</strong> ${r.strengths}</p>` : ''}
+        ${r.improvements? `<p>📝 <strong>Что улучшить:</strong> ${r.improvements}</p>` : ''}
+        ${r.tip         ? `<p>💬 <strong>Вопрос для размышления:</strong> ${r.tip}</p>` : ''}
+      </div>
+    </div>`;
+  resultEl.classList.add('visible');
+  resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ══ DETECTIVE MODE ════════════════════════════════════════════════════════════════
+function toggleDetective() {
+  const isOn = document.body.classList.toggle('detective-on');
+  document.getElementById('detToggle').classList.toggle('active', isOn);
+  document.getElementById('detModeBar').classList.toggle('active', isOn);
+  if (isOn) {
+    document.querySelectorAll('.module-item:not(.open)').forEach(m => m.classList.add('open'));
+  }
+}
+
+// detective choice buttons
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.det-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const choicesEl = this.closest('.det-choices');
+      const result = this.dataset.result;
+      const allBtns = choicesEl.querySelectorAll('.det-btn');
+
+      allBtns.forEach(b => {
+        b.classList.remove('chosen-right','chosen-partial','chosen-wrong');
+        b.classList.add('disabled');
+      });
+
+      const resultMap = { right: 'chosen-right', partial: 'chosen-partial', wrong: 'chosen-wrong' };
+      this.classList.remove('disabled');
+      this.classList.add(resultMap[result] || 'chosen-wrong');
+
+      // show correct reveal
+      const choiceIndex = Array.from(allBtns).indexOf(this);
+      const revealEls = this.closest('.det-story').querySelectorAll('.det-reveal');
+      revealEls.forEach(r => r.style.display = 'none');
+      if (revealEls[choiceIndex]) revealEls[choiceIndex].style.display = 'block';
+    });
+  });
+});
+
+// ══ LLM MODAL ═════════════════════════════════════════════════════════════════════
+function openLlmModal()   { document.getElementById('llmModal').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeLlmModal(e) {
+  if (e && e.target !== document.getElementById('llmModal')) return;
+  document.getElementById('llmModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ══ SCROLL ANIMATIONS ════════════════════════════════════════════════════════════
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('.level-progress__fill').forEach(bar => {
+        bar.style.width = (bar.dataset.width || 30) + '%';
+      });
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ══ SMOOTH SCROLL ════════════════════════════════════════════════════════════════
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>
