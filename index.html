@@ -491,10 +491,7 @@
       position: relative;
     }
     /* сургучная печать — кружок */
-    .det-badge::before {
-      content: '🔍';
-      font-size: 14px; margin-right: 4px;
-    }
+    /* det-badge::before removed */
 
     /* ── Нарратив — рукопись на пергаменте ── */
     .det-scene {
@@ -507,7 +504,7 @@
     }
     .det-scene-label {
       font-family: var(--det-font-body);
-      font-size: 11px; color: var(--det-sealing);
+      font-size: 12px; color: var(--det-sealing);
       text-transform: uppercase; letter-spacing: .1em;
       margin-bottom: 10px; display: block;
     }
@@ -549,11 +546,11 @@
     }
     .det-clue-label {
       font-family: var(--det-font-body);
-      font-size: 11px; font-weight: normal;
+      font-size: 13px; font-weight: normal;
       color: var(--det-ink);
       text-transform: uppercase; letter-spacing: .1em;
       margin-bottom: 10px; display: block;
-      border-bottom: 1px solid rgba(44,26,14,.15);
+      border-bottom: 2px solid rgba(44,26,14,.30);
       padding-bottom: 6px;
     }
     .det-clues ul {
@@ -586,7 +583,7 @@
     /* кнопки — конверты/карточки */
     .det-btn {
       display: block; width: 100%; text-align: left;
-      padding: 13px 18px; margin-bottom: 10px;
+      padding: 13px 18px; margin-bottom: 8px;
       border-radius: 3px;
       border: 1px solid rgba(44,26,14,.25);
       background: linear-gradient(135deg, #fffef8 0%, #f7f0dc 100%);
@@ -613,6 +610,18 @@
     }
     /* отступ для буквы */
     .det-btn { padding-left: 44px; }
+    /* стрелка-намёк на интерактивность */
+    .det-btn::after {
+      content: '→';
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      color: rgba(44,26,14,.25); font-size: 16px;
+      transition: right .15s ease, color .15s ease;
+      font-family: sans-serif;
+    }
+    .det-btn:hover::after { right: 10px; color: var(--det-gold); }
+    .det-btn.chosen-right::after,
+    .det-btn.chosen-partial::after,
+    .det-btn.chosen-wrong::after { display: none; }
 
     .det-btn:hover {
       background: linear-gradient(135deg, #fff9e8 0%, #f2e4be 100%);
@@ -1312,7 +1321,7 @@
             </div>
             <div class="module-takeaway">💡 <strong>Запомни:</strong> Продакт отвечает за результат без права приказа — только силой аргумента. Пользователь нанимает твой продукт на работу, и твоя задача — понять, какую именно.</div>
             <div class="det-story"><div class="det-inner">  <div class="det-scene">
-    <span class="det-badge">🔍 Расследование</span>
+    <span class="det-badge">Расследование</span>
     <div class="det-narrative"><p>Понедельник, 09:15. Антон входит в переговорку с кофе и ноутбуком. Марина уже сидит за столом и смотрит на него так, как смотрят на человека, который потерял ключи от машины, но сам ещё не знает об этом.</p><p><em>— Ты видел цифры за прошлую неделю? — спрашивает она тихо.</em></p><p>Антон открывает дашборд. Конверсия в покупку: 2.1%. Было 2.1% три недели назад. Команда за это время выкатила новый поиск, переделала страницу результатов, починила баги в фильтрах. Дима закрыл 23 задачи. Конверсия стоит как вкопанная.</p><p><em>— Команда пашет, — говорит Антон, закрывая ноутбук. — Мы сделали всё, что планировали.</em></p><p>Марина кивает. Медленно. Так кивают, когда хотят сказать «ты сам слышишь, что говоришь?» — но не говорят вслух.</p></div>
   </div>
   <div class="det-clues">
@@ -1325,10 +1334,10 @@
     </ul>
   </div>
   <div class="det-choices" data-module="easy-01">
-    <div class="det-choice-label">🤔 Ты — Антон. Саша (CPO) через час спросит: «Что мы делаем не так?» Что ответишь?</div>
-    <button class="det-btn" data-letter="А" data-result="wrong">А — Объяснить Саше, что команда работала хорошо, просто нужно больше времени</button>
-    <button class="det-btn" data-letter="Б" data-result="partial">Б — Признать проблему и провести аудит: выяснить, почему фичи не двинули метрику</button>
-    <button class="det-btn" data-letter="В" data-result="right">В — Остановить текущий спринт, переформулировать все задачи как гипотезы с измеримым результатом</button>
+    <div class="det-choice-label">Ты — Антон. Саша (CPO) через час спросит: «Что мы делаем не так?» Что ответишь?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">Объяснить Саше, что команда работала хорошо, просто нужно больше времени</button>
+    <button class="det-btn" data-letter="Б" data-result="partial">Признать проблему и провести аудит: выяснить, почему фичи не двинули метрику</button>
+    <button class="det-btn" data-letter="В" data-result="right">Остановить текущий спринт, переформулировать все задачи как гипотезы с измеримым результатом</button>
   </div>
   <div class="det-reveal det-reveal-0" style="display:none">
     <div class="det-result-badge wrong">❌ Не то</div>
@@ -1369,7 +1378,7 @@
             </div>
             <div class="module-takeaway">💡 <strong>Запомни:</strong> Хорошее решение всегда учитывает три измерения — рынок, компанию и команду.</div>
             <div class="det-story"><div class="det-inner">  <div class="det-scene">
-    <span class="det-badge">🔍 Расследование</span>
+    <span class="det-badge">Расследование</span>
     <div class="det-narrative"><p>Марина открывает дашборд. Adoption фичи «Избранные маршруты»: 4%. Шесть недель после релиза. Катя сидит напротив и смотрит в пустой стакан из-под кофе. Полгода она продвигала эту фичу. Дима написал код. Лена сделала иконку со звёздочкой. Все работали.</p><p><em>— Может, мы просто плохо рассказали о фиче? — говорит Катя. — Нужен онбординг, пуш-уведомление, баннер на главной.</em></p><p>Марина открывает другую вкладку: данные из App Store Reviews. Ни одного отзыва про «Избранные маршруты». Пользователи просто её не замечают.</p><p><em>— Или мы решили не ту проблему, — говорит Марина тихо.</em></p></div>
   </div>
   <div class="det-clues">
@@ -1382,10 +1391,10 @@
     </ul>
   </div>
   <div class="det-choices" data-module="easy-02">
-    <div class="det-choice-label">🤔 Ты — Катя. Что стало настоящей причиной провала — и что делать дальше?</div>
-    <button class="det-btn" data-letter="А" data-result="wrong">А — Запустить маркетинговую кампанию: баннер, пуш-уведомление, онбординг для фичи</button>
-    <button class="det-btn" data-letter="Б" data-result="right">Б — Провести пользовательские интервью, чтобы понять, какую работу хотят делегировать приложению</button>
-    <button class="det-btn" data-letter="В" data-result="partial">В — Удалить фичу, она явно не нужна пользователям</button>
+    <div class="det-choice-label">Ты — Катя. Что стало настоящей причиной провала — и что делать дальше?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">Запустить маркетинговую кампанию: баннер, пуш-уведомление, онбординг для фичи</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Провести пользовательские интервью, чтобы понять, какую работу хотят делегировать приложению</button>
+    <button class="det-btn" data-letter="В" data-result="partial">Удалить фичу, она явно не нужна пользователям</button>
   </div>
   <div class="det-reveal det-reveal-0" style="display:none">
     <div class="det-result-badge wrong">❌ Не то</div>
@@ -1428,7 +1437,7 @@
             </div>
             <div class="module-takeaway">💡 <strong>Запомни:</strong> Метрика без цели — просто число. Цель без метрики — просто слова. Продакт соединяет одно с другим.</div>
             <div class="det-story"><div class="det-inner">  <div class="det-scene">
-    <span class="det-badge">🔍 Расследование</span>
+    <span class="det-badge">Расследование</span>
     <div class="det-narrative"><p>Квартальный ревью. NPS за квартал: вырос с 34 до 51. Антон три месяца работал над этим — убирал трение, ускорял поиск, добавлял понятные сообщения об ошибках.</p><p>Саша открывает ноутбук и молчит несколько секунд.</p><p><em>— NPS отличный. Но выручка за квартал упала на 8%. Как это объяснить?</em></p><p>Антон не ожидал этого вопроса. Он начинает говорить про долгосрочное влияние на retention, но Саша перебивает: <em>— Антон, мы не НКО. Нам нужно зарабатывать деньги.</em></p></div>
   </div>
   <div class="det-clues">
@@ -1441,10 +1450,10 @@
     </ul>
   </div>
   <div class="det-choices" data-module="easy-03">
-    <div class="det-choice-label">🤔 Ты — Антон. Как объяснить разрыв между NPS и выручкой — и что изменить?</div>
-    <button class="det-btn" data-letter="А" data-result="wrong">А — Объяснить, что NPS влияет на выручку с задержкой: довольные пользователи вернутся</button>
-    <button class="det-btn" data-letter="Б" data-result="right">Б — Признать, что выбрал неправильную основную метрику, и предложить пересмотреть систему</button>
-    <button class="det-btn" data-letter="В" data-result="partial">В — Найти другие причины: сезонность, конкуренты, внешние факторы</button>
+    <div class="det-choice-label">Ты — Антон. Как объяснить разрыв между NPS и выручкой — и что изменить?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">Объяснить, что NPS влияет на выручку с задержкой: довольные пользователи вернутся</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Признать, что выбрал неправильную основную метрику, и предложить пересмотреть систему</button>
+    <button class="det-btn" data-letter="В" data-result="partial">Найти другие причины: сезонность, конкуренты, внешние факторы</button>
   </div>
   <div class="det-reveal det-reveal-0" style="display:none">
     <div class="det-result-badge wrong">❌ Не то</div>
@@ -1486,7 +1495,7 @@
             </div>
             <div class="module-takeaway">💡 <strong>Запомни:</strong> Хорошее решение сформулировано как гипотеза, проверено разумным способом и честно интерпретировано, даже если результат оказался неожиданным.</div>
             <div class="det-story"><div class="det-inner">  <div class="det-scene">
-    <span class="det-badge">🔍 Расследование</span>
+    <span class="det-badge">Расследование</span>
     <div class="det-narrative"><p>Антон врывается в общий чат: «Тест победил!!! Раскатываем новую версию кнопки на всех!!!»</p><p>Марина открывает отчёт. Тест идёт пять дней. Выборка: 890 пользователей на вариант. Конверсия варианта B выше на 0.8 п.п. p-value: 0.34.</p><p><em>— Антон, подожди. p-value у нас 0.34.</em></p><p><em>— Ну и что? B лучше A, видно же невооружённым глазом. Зачем ждать?</em></p><p>Дима присылает в чат один символ: «👀».</p></div>
   </div>
   <div class="det-clues">
@@ -1499,10 +1508,10 @@
     </ul>
   </div>
   <div class="det-choices" data-module="easy-04">
-    <div class="det-choice-label">🤔 Ты — Марина. Как убедить Антона не останавливать тест раньше времени?</div>
-    <button class="det-btn" data-letter="А" data-result="wrong">А — Согласиться: разница есть, значит можно раскатывать</button>
-    <button class="det-btn" data-letter="Б" data-result="right">Б — Объяснить, что p=0.34 — незначимый результат, и дождаться нужной выборки</button>
-    <button class="det-btn" data-letter="В" data-result="partial">В — Предложить компромисс: раскатить на 20% и посмотреть</button>
+    <div class="det-choice-label">Ты — Марина. Как убедить Антона не останавливать тест раньше времени?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">Согласиться: разница есть, значит можно раскатывать</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Объяснить, что p=0.34 — незначимый результат, и дождаться нужной выборки</button>
+    <button class="det-btn" data-letter="В" data-result="partial">Предложить компромисс: раскатить на 20% и посмотреть</button>
   </div>
   <div class="det-reveal det-reveal-0" style="display:none">
     <div class="det-result-badge wrong">❌ Не то</div>
@@ -1551,7 +1560,7 @@
             </div>
             <div class="module-takeaway">💡 <strong>Запомни:</strong> Discovery — не про подтверждение своих идей, а про поиск работ, которые никто нормально не делает. Найди их — и у тебя будет продукт. Не найди — и у тебя будет фича.</div>
             <div class="det-story"><div class="det-inner">  <div class="det-scene">
-    <span class="det-badge">🔍 Расследование</span>
+    <span class="det-badge">Расследование</span>
     <div class="det-narrative"><p>Три месяца. Дима написал 4800 строк кода. Команда выкатила систему расширенных фильтров: по времени, перевозчику, типу автобуса, наличию кондиционера. Красиво. Технически сложно. Adoption: 6%.</p><p>71% используют только один фильтр — «ближайший рейс».</p><p><em>— Я провела три месяца с командой над этим. Почему люди не используют? — говорит Катя Марине.</em></p><p>Марина запускает запись пользовательской сессии. Пользователь нажимает «ближайший рейс»… и звонит по телефону: «А автобус-то вообще ходит сейчас?»</p></div>
   </div>
   <div class="det-clues">
@@ -1564,10 +1573,10 @@
     </ul>
   </div>
   <div class="det-choices" data-module="medium-01">
-    <div class="det-choice-label">🤔 Ты — Катя. Что нужно было сделать до разработки — и что делать теперь?</div>
-    <button class="det-btn" data-letter="А" data-result="wrong">А — Провести A/B тест: упростить интерфейс фильтров, чтобы было проще их использовать</button>
-    <button class="det-btn" data-letter="Б" data-result="right">Б — Провести JTBD-интервью, понять реальный страх и переосмыслить фичу</button>
-    <button class="det-btn" data-letter="В" data-result="partial">В — Принять результат: 6% — нормально для «power user» фичи, оставить как есть</button>
+    <div class="det-choice-label">Ты — Катя. Что нужно было сделать до разработки — и что делать теперь?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">Провести A/B тест: упростить интерфейс фильтров, чтобы было проще их использовать</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Провести JTBD-интервью, понять реальный страх и переосмыслить фичу</button>
+    <button class="det-btn" data-letter="В" data-result="partial">Принять результат: 6% — нормально для «power user» фичи, оставить как есть</button>
   </div>
   <div class="det-reveal det-reveal-0" style="display:none">
     <div class="det-result-badge wrong">❌ Не то</div>
@@ -1610,7 +1619,7 @@
             </div>
             <div class="module-takeaway">💡 <strong>Запомни:</strong> Стратегия — это глагол, а не существительное. OODA Loop — инструмент оставаться живым в меняющемся рынке.</div>
             <div class="det-story"><div class="det-inner">  <div class="det-scene">
-    <span class="det-badge">🔍 Расследование</span>
+    <span class="det-badge">Расследование</span>
     <div class="det-narrative"><p>Февраль. Конкурент выкатывает мгновенное бронирование без регистрации, оплата через SberPay одним нажатием. Марина замечает это в понедельник, пишет в чат.</p><p>Антон: <em>«Интересно. Надо разобраться, насколько критично».</em> Проходит неделя. Марина: конкурент забрал 12% трафика в сегменте «спонтанные поездки».</p><p><em>— Нам нужно что-то решить, — говорит Лена.</em></p><p><em>— Согласен, давайте сначала изучим их подход подробнее. Марина, можешь сделать конкурентный анализ?</em> Два часа. 18 страниц. Воркшоп переносится. Потом ещё раз. Через месяц: конкурент — 23% трафика.</p></div>
   </div>
   <div class="det-clues">
@@ -1623,10 +1632,10 @@
     </ul>
   </div>
   <div class="det-choices" data-module="medium-02">
-    <div class="det-choice-label">🤔 Ты — Антон. Где был момент, когда нужно было действовать?</div>
-    <button class="det-btn" data-letter="А" data-result="wrong">А — Заказать ещё один детальный анализ: понять, как конкурент технически реализовал фичу</button>
-    <button class="det-btn" data-letter="Б" data-result="right">Б — На второй неделе запустить быстрый эксперимент: упростить оплату для сегмента «в день поездки»</button>
-    <button class="det-btn" data-letter="В" data-result="partial">В — Скопировать фичу конкурента один в один</button>
+    <div class="det-choice-label">Ты — Антон. Где был момент, когда нужно было действовать?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">Заказать ещё один детальный анализ: понять, как конкурент технически реализовал фичу</button>
+    <button class="det-btn" data-letter="Б" data-result="right">На второй неделе запустить быстрый эксперимент: упростить оплату для сегмента «в день поездки»</button>
+    <button class="det-btn" data-letter="В" data-result="partial">Скопировать фичу конкурента один в один</button>
   </div>
   <div class="det-reveal det-reveal-0" style="display:none">
     <div class="det-result-badge wrong">❌ Не то</div>
@@ -1668,7 +1677,7 @@
             </div>
             <div class="module-takeaway">💡 <strong>Запомни:</strong> Бэклог — список ставок. Каждая ставка — гипотеза с критериями проверки. Быстрый дешёвый провал — лучший результат, если он учит.</div>
             <div class="det-story"><div class="det-inner">  <div class="det-scene">
-    <span class="det-badge">🔍 Расследование</span>
+    <span class="det-badge">Расследование</span>
     <div class="det-narrative"><p>Шесть месяцев назад Вася пришёл с идеей: «Личный кабинет путешественника». Единое место: история поездок, документы, сохранённые маршруты. Все согласились. Никто не спрашивал, есть ли у пользователей такая проблема.</p><p>Шесть месяцев работы. Три разработчика. Релиз в срок, красивый. Usage через два месяца: 2%. Из них половина — сотрудники, которые тестировали.</p><p><em>— Два процента, — читает Марина вслух, глядя на Васю. — Два. Процента.</em></p></div>
   </div>
   <div class="det-clues">
@@ -1681,10 +1690,10 @@
     </ul>
   </div>
   <div class="det-choices" data-module="medium-03">
-    <div class="det-choice-label">🤔 Ты — Вася. Что нужно было сделать полгода назад — и как изменить подход?</div>
-    <button class="det-btn" data-letter="А" data-result="wrong">А — Добавить онбординг: пользователи просто не знают о возможностях кабинета</button>
-    <button class="det-btn" data-letter="Б" data-result="right">Б — Провести интервью, понять реальные паттерны — и либо разворот, либо закрыть фичу</button>
-    <button class="det-btn" data-letter="В" data-result="wrong">В — Оставить как есть: со временем пользователи привыкнут</button>
+    <div class="det-choice-label">Ты — Вася. Что нужно было сделать полгода назад — и как изменить подход?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">Добавить онбординг: пользователи просто не знают о возможностях кабинета</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Провести интервью, понять реальные паттерны — и либо разворот, либо закрыть фичу</button>
+    <button class="det-btn" data-letter="В" data-result="wrong">Оставить как есть: со временем пользователи привыкнут</button>
   </div>
   <div class="det-reveal det-reveal-0" style="display:none">
     <div class="det-result-badge wrong">❌ Не то</div>
@@ -1726,7 +1735,7 @@
             </div>
             <div class="module-takeaway">💡 <strong>Запомни:</strong> Хороший процесс — не набор митингов. Это структура, которая даёт тебе время думать, быстро решать и не застревать в деталях.</div>
             <div class="det-story"><div class="det-inner">  <div class="det-scene">
-    <span class="det-badge">🔍 Расследование</span>
+    <span class="det-badge">Расследование</span>
     <div class="det-narrative"><p>Настя онлайн с восьми утра. Ответила на 47 сообщений в Slack, три созвона, фидбек Лене, два комментария в Jira. Сейчас 20:00. Настя всё ещё онлайн.</p><p>Саша пишет в личку: <em>«Настя, у нас завтра квартальный ревью. Покажи, какие гипотезы ты проверила за три месяца».</em></p><p>Настя открывает Jira. Notion. Slack. Двенадцать часов работы каждый день — и ни одной закрытой гипотезы. Есть задачи. Есть фидбек. Есть координация. Но нет ни одного эксперимента, который завершился ответом «да» или «нет».</p><p><em>— Я очень занята, — думает Настя. — Но чем именно?</em></p></div>
   </div>
   <div class="det-clues">
@@ -1739,10 +1748,10 @@
     </ul>
   </div>
   <div class="det-choices" data-module="medium-04">
-    <div class="det-choice-label">🤔 Ты — Настя. Как выйти из режима «постоянно делаю»?</div>
-    <button class="det-btn" data-letter="А" data-result="wrong">А — Работать ещё эффективнее: оптимизировать расписание, сократить время на каждую задачу</button>
-    <button class="det-btn" data-letter="Б" data-result="right">Б — Поговорить с Сашей честно: показать, чем реально занято время, договориться о защищённом времени</button>
-    <button class="det-btn" data-letter="В" data-result="partial">В — Делегировать координационные задачи и освободить время самостоятельно</button>
+    <div class="det-choice-label">Ты — Настя. Как выйти из режима «постоянно делаю»?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">Работать ещё эффективнее: оптимизировать расписание, сократить время на каждую задачу</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Поговорить с Сашей честно: показать, чем реально занято время, договориться о защищённом времени</button>
+    <button class="det-btn" data-letter="В" data-result="partial">Делегировать координационные задачи и освободить время самостоятельно</button>
   </div>
   <div class="det-reveal det-reveal-0" style="display:none">
     <div class="det-result-badge wrong">❌ Не то</div>
@@ -1792,7 +1801,7 @@
             </div>
             <div class="module-takeaway">💡 <strong>Запомни:</strong> Убеждают не слова — убеждают данные, упакованные в историю. Признай возражение первым — и ты уже выиграл половину разговора.</div>
             <div class="det-story"><div class="det-inner">  <div class="det-scene">
-    <span class="det-badge">🔍 Расследование</span>
+    <span class="det-badge">Расследование</span>
     <div class="det-narrative"><p>Пятница, 16:30. Переговорка «Москва». Дима входит с флешкой. 40 слайдов. Тема: переход на новый технический стек. Дима — за. Лена — против. Антон принимает решение, но без формальной власти над выбором.</p><p>На слайде 31 Лена поднимает руку: <em>— Ты упомянул, что риск миграции данных минимальный. Почему?</em> Дима переключает на слайд 34. <em>— Мы использовали похожую миграцию в 2022 году.</em></p><p><em>— Но тогда было 200 тысяч пользователей. Сейчас — 2.4 миллиона. Это другой масштаб.</em></p><p>Тишина.</p></div>
   </div>
   <div class="det-clues">
@@ -1805,10 +1814,10 @@
     </ul>
   </div>
   <div class="det-choices" data-module="hard-01">
-    <div class="det-choice-label">🤔 Ты — Антон. Как помочь команде прийти к решению?</div>
-    <button class="det-btn" data-letter="А" data-result="wrong">А — Поддержать Диму: у него больше данных и детальная подготовка</button>
-    <button class="det-btn" data-letter="Б" data-result="right">Б — Попросить Диму прямо ответить на вопрос Лены про масштаб — и только потом двигаться дальше</button>
-    <button class="det-btn" data-letter="В" data-result="wrong">В — Предложить голосование команды: пусть большинство решит</button>
+    <div class="det-choice-label">Ты — Антон. Как помочь команде прийти к решению?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">Поддержать Диму: у него больше данных и детальная подготовка</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Попросить Диму прямо ответить на вопрос Лены про масштаб — и только потом двигаться дальше</button>
+    <button class="det-btn" data-letter="В" data-result="wrong">Предложить голосование команды: пусть большинство решит</button>
   </div>
   <div class="det-reveal det-reveal-0" style="display:none">
     <div class="det-result-badge wrong">❌ Не то</div>
@@ -1851,7 +1860,7 @@
             </div>
             <div class="module-takeaway">💡 <strong>Запомни:</strong> Твоя команда нанимает тебя, чтобы у их работы был смысл и направление. OKR без числовых KR — генератор конфликтов.</div>
             <div class="det-story"><div class="det-inner">  <div class="det-scene">
-    <span class="det-badge">🔍 Расследование</span>
+    <span class="det-badge">Расследование</span>
     <div class="det-narrative"><p>Восемь недель. Команда ЖД-билетов не может договориться о приоритетах. В чате — 340 непрочитанных. Семь «финальных» версий роадмапа, каждая кем-то оспаривается.</p><p>OKR на квартал: «Objective: Сделать покупку ЖД-билетов лучшим опытом на рынке». Key Results: не прописаны.</p><p><em>— Мы говорили про «лучший опыт» — это скорость покупки, — настаивает Вася.</em></p><p><em>— Нет, это выбор маршрутов, — возражает Катя.</em></p><p><em>— Это вообще про NPS, — вступает Марина.</em></p><p>Антон сидит и смотрит на трёх людей, которые говорят об одном слове и имеют в виду три разные вещи. Квартал уже наполовину прошёл.</p></div>
   </div>
   <div class="det-clues">
@@ -1864,10 +1873,10 @@
     </ul>
   </div>
   <div class="det-choices" data-module="hard-02">
-    <div class="det-choice-label">🤔 Ты — Антон. Как разрубить гордиев узел?</div>
-    <button class="det-btn" data-letter="А" data-result="wrong">А — Провести голосование: пусть команда выберет</button>
-    <button class="det-btn" data-letter="Б" data-result="right">Б — Остановить спор и переписать OKR: добавить числовые Key Results для каждой интерпретации</button>
-    <button class="det-btn" data-letter="В" data-result="partial">В — Эскалировать к Саше: пусть CPO решит</button>
+    <div class="det-choice-label">Ты — Антон. Как разрубить гордиев узел?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">Провести голосование: пусть команда выберет</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Остановить спор и переписать OKR: добавить числовые Key Results для каждой интерпретации</button>
+    <button class="det-btn" data-letter="В" data-result="partial">Эскалировать к Саше: пусть CPO решит</button>
   </div>
   <div class="det-reveal det-reveal-0" style="display:none">
     <div class="det-result-badge wrong">❌ Не то</div>
@@ -1909,7 +1918,7 @@
             </div>
             <div class="module-takeaway">💡 <strong>Запомни:</strong> На каждом грейде тебя нанимают делать другую работу. Разрыв между тем, что делаешь сейчас, и тем, что ждут на следующем уровне — это твой план развития.</div>
             <div class="det-story"><div class="det-inner">  <div class="det-scene">
-    <span class="det-badge">🔍 Расследование</span>
+    <span class="det-badge">Расследование</span>
     <div class="det-narrative"><p>Вася — лучший PM в команде автобусных билетов. Метрики наизусть. Спринты всегда в срок. Команда его любит. Дима: «С Васей я никогда не блокируюсь».</p><p>Год назад Вася подал заявку на Senior PM. Саша сказал: рано. Полгода прошло. Снова подал. Снова отказ. Они сидят в переговорке.</p><p><em>— Вася, ты отличный PM. Это правда. Но Senior PM — это другая работа. И я не вижу, что ты делаешь эту работу.</em></p><p>Вася не понимает. Он делает всё, что от него требуется. Делает это хорошо. Разве этого не достаточно?</p></div>
   </div>
   <div class="det-clues">
@@ -1922,10 +1931,10 @@
     </ul>
   </div>
   <div class="det-choices" data-module="hard-03">
-    <div class="det-choice-label">🤔 Ты — Вася. Что изменить?</div>
-    <button class="det-btn" data-letter="А" data-result="wrong">А — Работать ещё лучше: больше задач, выше качество спринтов</button>
-    <button class="det-btn" data-letter="Б" data-result="right">Б — Спросить Сашу прямо: что именно делает Senior PM, чего не делает PM — и начать это делать</button>
-    <button class="det-btn" data-letter="В" data-result="partial">В — Найти другую компанию, где дадут Senior без таких требований</button>
+    <div class="det-choice-label">Ты — Вася. Что изменить?</div>
+    <button class="det-btn" data-letter="А" data-result="wrong">Работать ещё лучше: больше задач, выше качество спринтов</button>
+    <button class="det-btn" data-letter="Б" data-result="right">Спросить Сашу прямо: что именно делает Senior PM, чего не делает PM — и начать это делать</button>
+    <button class="det-btn" data-letter="В" data-result="partial">Найти другую компанию, где дадут Senior без таких требований</button>
   </div>
   <div class="det-reveal det-reveal-0" style="display:none">
     <div class="det-result-badge wrong">❌ Не то</div>
