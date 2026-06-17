@@ -512,41 +512,85 @@
     /*
      * Визуальный язык: Лондон 1890-х. Пергамент, дерево красного дерева, сургуч,
      * чернила, газетные вырезки, рукописные заметки. Никакого синего.
-     * Палитра: #2c1a0e (тёмное дерево), #f5e6c8 (пергамент), #8b1a1a (сургуч),
-     *          #1a3a1a (чернила), #c8960c (старое золото/воск), #4a3728 (кофе/тень)
+     * Палитра (verified from Pinterest references June 2026):
+     *   Крафтовая — #D4B896 (parchment), #C4A882 (aged paper), #8B1A1A (stamp red),
+     *               #A67C52 (kraft board), #D4A535 (lamp amber), #C4A96B (manila)
+     *   Нуар    — #0A0A0A (deep black), #1A0F08 (dark warm), #CC1A1A (blood red)
      */
 
-    /* шрифтовые переменные детектива */
+    /* шрифтовые переменные детектива — ОБНОВЛЕНО по референсам */
     :root {
-      --det-font-title: 'IM Fell English', Georgia, serif;
+      --det-font-title: 'IM Fell English', 'Playfair Display', Georgia, serif;
       --det-font-body:  'Special Elite', 'Courier New', monospace;
-      --det-parchment:  #f5e6c8;
-      --det-parchment-dark: #e8d4a8;
-      --det-ink:        #1e140a;
-      --det-ink-2:      #3d2b1a;
-      --det-ink-faded:  #6b4c2e;
-      --det-sealing:    #8b1a1a;  /* сургуч */
-      --det-gold:       #c8960c;  /* воск/золото */
-      --det-wood:       #2c1a0e;  /* красное дерево */
-      --det-wood-light: #4a3728;
-      --det-green:      #2d4a1e;  /* бутылочное стекло */
-      --det-paper-line: rgba(30,20,10,.12);
+
+      /* Aged paper palette (from classified docs + TOP SECRET references) */
+      --det-parchment:       #F5F0E8;   /* чистый белый лист */
+      --det-parchment-aged:  #E8DFC0;   /* состаренная бумага */
+      --det-manila:          #D4B896;   /* манильский картон */
+      --det-manila-dark:     #C4A882;   /* тёмный манильский */
+      --det-kraft:           #A67C52;   /* крафт-бумага/доска */
+      --det-foxing:          #8B6B3A;   /* foxing пятна */
+      --det-edge:            #6B5020;   /* обгоревший край */
+
+      /* Ink & text */
+      --det-ink:             #1A1208;   /* основные чернила */
+      --det-ink-2:           #2C1A0A;   /* тёмно-коричневые чернила */
+      --det-ink-faded:       #8B6340;   /* выцветшие чернила */
+      --det-typewriter:      #2A2010;   /* машинопись */
+
+      /* Accents from references */
+      --det-stamp-red:       #8B1A1A;   /* NOT GUILTY / TOP SECRET штамп */
+      --det-stamp-red-2:     #CC1A1A;   /* CLASSIFIED штамп */
+      --det-gold:            #D4A535;   /* лампа/латунь/воск */
+      --det-brass:           #C0A060;   /* перо/металлические детали */
+      --det-tape:            rgba(212,196,160,0.82); /* скотч/малярная лента */
+      --det-tape-dark:       rgba(180,160,120,0.75);
+      --det-clip:            #C8C8C8;   /* металлические скрепки */
+      --det-pin-gold:        #D4A535;   /* кнопки/пины */
+      --det-stain:           rgba(122,92,46,0.35);  /* кофейное пятно */
+      --det-line-blue:       rgba(184,196,212,0.6); /* линии тетради */
+
+      /* Wood & board */
+      --det-wood:            #8B6914;   /* деревянная доска */
+      --det-wood-dark:       #5C3E18;   /* тёмное дерево */
+      --det-wood-red:        #2C1A0E;   /* красное дерево */
+
+      /* Notebook line */
+      --det-paper-line:      rgba(184,196,212,0.5); /* notebook blue lines */
     }
 
-    /* ── ДЕТЕКТИВ-БАР — деревянная доска со скотчем ── */
+    /* ── ДЕТЕКТИВ-БАР — деревянная доска + криминальная лента ── */
     .det-mode-bar {
+      /* Основная деревянная полоса */
       background:
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='4'%3E%3Crect width='100' height='4' fill='%23b8962a'/%3E%3Crect width='50' height='4' fill='%232c1a0e' opacity='0.3'/%3E%3C/svg%3E"),
         linear-gradient(90deg, #2c1a0e 0%, #3d2616 40%, #2c1a0e 70%, #1a0e06 100%);
-      color: var(--det-parchment);
+      color: var(--det-manila);
       font-family: var(--det-font-body);
       font-size: 13px; letter-spacing: .06em;
-      padding: 11px 0; text-align: center;
+      padding: 0; text-align: center;
       position: sticky; top: 60px; z-index: 90;
       border-bottom: 2px solid var(--det-gold);
       display: none;
     }
     .det-mode-bar.active { display: block; }
+
+    /* Криминальная лента CRIME SCENE (из Image 1) внутри бара */
+    .det-mode-bar-inner {
+      padding: 9px 0;
+      position: relative;
+    }
+    /* Полоска ленты снизу */
+    .det-mode-bar-tape {
+      display: block;
+      height: 6px;
+      background: repeating-linear-gradient(
+        -45deg,
+        #FFD700 0px, #FFD700 8px,
+        #1A1A1A 8px, #1A1A1A 16px
+      );
+      opacity: .7;
+    }
 
     /* ── КНОПКА-ТОГГЛ ── */
     .det-toggle-btn {
@@ -567,8 +611,8 @@
       box-shadow: 0 3px 12px rgba(44,26,14,.35);
     }
 
-    /* ── DET-STORY: обёртка дела — стол детектива ── */
-    .det-story { display: none; margin-top: 20px; }
+    /* ── DET-STORY: Обёртка дела — ПОЛНЫЙ РЕДИЗАЙН по референсам ── */
+    .det-story { display: none; margin-top: 24px; }
     body.detective-on .det-story { display: block; }
     body.detective-on .module-hook,
     body.detective-on .module-body > h4,
@@ -578,187 +622,320 @@
     body.detective-on .module-takeaway { display: none; }
     body.detective-on .module-item.open .module-body { display: block; }
 
+    /* ══ ЭВИДЕНС-БОРД: деревянная доска с уликами ══ */
     .det-story {
-      background:
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"),
-        linear-gradient(170deg, #f0d99a 0%, #e8cf8a 30%, #f2dfa0 60%, #dcc678 100%);
+      /* Доска — имитация дерева из референсов */
+      background-color: var(--det-wood);
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          transparent, transparent 58px,
+          rgba(0,0,0,.06) 58px, rgba(0,0,0,.06) 60px
+        ),
+        repeating-linear-gradient(
+          180deg,
+          rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px,
+          transparent 1px, transparent 40px
+        );
+      border: 6px solid var(--det-wood-dark);
       border-radius: 4px;
-      border: 2px solid #b8962a;
       box-shadow:
-        0 0 0 4px #e8cf8a,
-        0 0 0 5px #b8962a,
-        0 6px 28px rgba(44,26,14,.4),
-        inset 0 1px 0 rgba(255,255,255,0.82);
-      padding: 0;
-      margin-top: 20px;
-      overflow: hidden;
+        inset 0 0 40px rgba(0,0,0,.35),
+        0 8px 32px rgba(44,26,14,.45);
+      padding: 24px;
       position: relative;
+      overflow: hidden;
     }
 
-    /* деревянная полоса сверху */
+    /* деревянный нейл-бар сверху */
     .det-story::before {
       content: '';
       display: block;
-      height: 8px;
-      background: linear-gradient(90deg, #2c1a0e, #4a3728 30%, #2c1a0e 60%, #3d2616 100%);
-      border-bottom: 1px solid #1a0e06;
+      height: 10px;
+      background: linear-gradient(90deg,
+        var(--det-wood-red),
+        #4a3728 25%,
+        var(--det-wood-red) 50%,
+        #3d2616 75%,
+        var(--det-wood-red) 100%
+      );
+      border-radius: 2px;
+      margin: -24px -24px 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.06);
     }
 
     /* ── Иллюстрация лупы сверху-справа ── */
     .det-magnifier-wrap {
-      position: absolute; top: 14px; right: 20px;
-      opacity: .18; pointer-events: none;
+      position: absolute; top: 18px; right: 22px;
+      opacity: .22; pointer-events: none;
+      filter: sepia(0.5) brightness(1.2);
     }
-    .det-magnifier-wrap svg { width: 64px; height: 64px; }
+    .det-magnifier-wrap svg { width: 72px; height: 72px; }
 
-    /* внутренний контейнер */
+    /* ══ MANILA-FOLDER: основная карточка дела ══ */
     .det-inner {
-      padding: 24px 28px 20px;
-      background-image: repeating-linear-gradient(
-        transparent, transparent 27px, var(--det-paper-line) 27px, var(--det-paper-line) 28px
-      );
-      background-position: 0 40px;
+      /* Манильская папка — цвет и текстура из Image 4 (classified docs) */
+      background-color: var(--det-manila);
+      background-image:
+        /* Зернистость бумаги */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E"),
+        /* Виньетирование */
+        radial-gradient(ellipse at center, transparent 50%, rgba(107,80,32,.22) 100%),
+        /* Вертикальный сгиб папки */
+        linear-gradient(90deg, rgba(0,0,0,.05) 0px, transparent 6px),
+        /* Notebook lines — синеватые, как в тетради (из Image 3 — ruled paper) */
+        repeating-linear-gradient(
+          transparent, transparent 27px,
+          var(--det-paper-line) 27px, var(--det-paper-line) 28px
+        );
+      background-position: 0 0, 0 0, 0 0, 0 38px;
+      border: 1px solid #b89a58;
+      border-radius: 2px;
+      box-shadow:
+        0 3px 12px rgba(0,0,0,.3),
+        inset 0 0 30px rgba(139,107,58,.12),
+        inset 0 1px 0 rgba(255,255,255,.12);
+      padding: 22px 26px 20px;
       position: relative;
     }
 
-    /* ── Заголовок расследования ── */
+    /* ── Скрепки (из Image 3 — paper clips) ── */
+    .det-inner::before,
+    .det-inner::after {
+      content: '';
+      position: absolute;
+      width: 26px; height: 14px;
+      border: 3px solid var(--det-clip);
+      border-radius: 4px 4px 0 0;
+      border-bottom: none;
+      background: linear-gradient(90deg, #888 0%, #e8e8e8 40%, #aaa 100%);
+      box-shadow: 1px 1px 3px rgba(0,0,0,.25);
+      top: -7px; z-index: 2;
+    }
+    .det-inner::before { left: 18px; }
+    .det-inner::after  { right: 60px; transform: rotate(8deg); }
+
+    /* ══ CASE HEADER — папка с номером дела ══ */
     .det-case-header {
       display: flex; align-items: flex-start; justify-content: space-between;
-      margin-bottom: 20px; padding-bottom: 14px;
-      border-bottom: 2px solid rgba(44,26,14,.2);
+      margin-bottom: 18px; padding-bottom: 12px;
+      border-bottom: 1px solid rgba(44,26,14,.2);
+      position: relative;
     }
     .det-case-num {
-      font-family: var(--det-font-title);
-      font-size: 11px; font-style: italic;
-      color: var(--det-ink-faded);
-      letter-spacing: .05em;
-    }
-    .det-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: var(--det-sealing);
-      color: #f5e6c8;
       font-family: var(--det-font-body);
-      font-size: 12px; font-weight: normal; letter-spacing: .08em;
-      text-transform: uppercase; padding: 5px 14px;
-      border-radius: 2px;
-      box-shadow: 0 2px 6px rgba(139,26,26,.35), inset 0 1px 0 rgba(255,255,255,.15);
+      font-size: 10px; color: var(--det-ink-faded);
+      letter-spacing: .12em; text-transform: uppercase;
     }
 
-    /* ── Нарратив — рукопись на пергаменте ── */
-    .det-scene {
-      background: rgba(255,250,235,.6);
-      border: 1px solid rgba(44,26,14,.15);
-      border-left: 4px solid var(--det-sealing);
-      border-radius: 0 3px 3px 0;
-      padding: 16px 18px; margin-bottom: 18px;
-      box-shadow: inset 0 1px 4px rgba(44,26,14,.06);
+    /* ══ BADGE/STAMP — красный штамп (из Image 3 "NOT GUILTY") ══ */
+    .det-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      color: var(--det-stamp-red);
+      font-family: var(--det-font-body);
+      font-size: 11px; letter-spacing: .18em;
+      text-transform: uppercase; padding: 4px 12px;
+      border: 2px solid var(--det-stamp-red);
+      /* Двойная рамка штампа из Image 3 */
+      outline: 1px solid var(--det-stamp-red);
+      outline-offset: 3px;
+      border-radius: 2px;
+      transform: rotate(-4deg);
+      mix-blend-mode: multiply;
+      opacity: .88;
+      filter: blur(0.2px);
+      background: transparent;
     }
+
+    /* ══ MASKING TAPE — прикрепляет сцену (из Image 2 + Image 3) ══ */
+    .det-scene {
+      background: var(--det-parchment-aged);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"),
+        radial-gradient(ellipse at center, transparent 60%, rgba(107,80,32,.08) 100%);
+      border: 1px solid rgba(44,26,14,.15);
+      border-left: none;
+      border-radius: 0 2px 2px 0;
+      padding: 16px 18px; margin-bottom: 20px;
+      position: relative;
+      box-shadow:
+        2px 2px 8px rgba(0,0,0,.18),
+        inset 0 1px 4px rgba(44,26,14,.05);
+      /* Лёгкий наклон как у прикреплённой карточки */
+      transform: rotate(-0.3deg);
+    }
+
+    /* Малярный скотч слева — держит сцену (из Image 2 "masking tape") */
+    .det-scene::before {
+      content: '';
+      position: absolute;
+      left: -18px; top: 30%;
+      width: 16px; height: 55px;
+      background: var(--det-tape);
+      background-image: repeating-linear-gradient(
+        90deg, transparent, transparent 2px,
+        var(--det-tape-dark) 2px, var(--det-tape-dark) 4px
+      );
+      transform: rotate(-2deg);
+      border-radius: 1px;
+      box-shadow: 1px 1px 3px rgba(0,0,0,.2);
+    }
+
+    /* Скотч сверху правого угла */
+    .det-scene::after {
+      content: '';
+      position: absolute;
+      right: -8px; top: -10px;
+      width: 50px; height: 12px;
+      background: var(--det-tape);
+      background-image: repeating-linear-gradient(
+        90deg, transparent, transparent 2px,
+        rgba(180,160,120,.3) 2px, rgba(180,160,120,.3) 4px
+      );
+      transform: rotate(-5deg);
+      box-shadow: 1px 1px 3px rgba(0,0,0,.15);
+      z-index: 1;
+    }
+
     .det-scene-label {
       font-family: var(--det-font-body);
-      font-size: 12px; color: var(--det-sealing);
-      text-transform: uppercase; letter-spacing: .1em;
+      font-size: 10px; color: var(--det-stamp-red);
+      text-transform: uppercase; letter-spacing: .14em;
       margin-bottom: 10px; display: block;
     }
     .det-narrative p {
       font-family: var(--det-font-body);
       font-size: 14px; color: var(--det-ink); line-height: 1.88;
       margin: 0 0 10px;
+      /* Имитация машинопечатного текста — слабая тень */
+      text-shadow: 0.4px 0.4px 0 rgba(0,0,0,.18);
     }
     .det-narrative p:last-child { margin-bottom: 0; }
     .det-narrative em {
       display: block;
       font-family: var(--det-font-title);
-      font-style: italic;
-      color: var(--det-ink-2);
-      font-size: 14px; line-height: 1.7;
-      margin: 6px 0 10px 16px;
-      padding: 6px 14px;
-      background: rgba(44,26,14,.04);
-      border-left: 2px solid var(--det-gold);
+      font-style: italic; color: var(--det-ink-2);
+      font-size: 14px; line-height: 1.75;
+      margin: 7px 0 12px 18px;
+      padding: 7px 14px;
+      background: rgba(212,165,53,.08);
+      border-left: 3px solid var(--det-gold);
+      transform: rotate(0.2deg);
     }
 
-    /* ── Доска улик — газетная вырезка ── */
+    /* ══ ДОСКА УЛИК — газетный лист/newspaper (из Image 7) ══ */
     .det-clues {
-      background: #fafafa;
-      border: 1px solid rgba(44,26,14,.2);
+      /* Газетная бумага — кремовая, старая */
+      background: var(--det-parchment-aged);
+      border: 1px solid rgba(44,26,14,.22);
       border-top: 3px solid var(--det-ink);
-      border-radius: 0 0 3px 3px;
-      padding: 14px 18px; margin-bottom: 18px;
-      box-shadow: 2px 3px 0 rgba(44,26,14,.12);
+      border-radius: 0 0 2px 2px;
+      padding: 14px 18px; margin-bottom: 20px;
+      box-shadow:
+        2px 3px 0 rgba(44,26,14,.12),
+        3px 4px 8px rgba(0,0,0,.15);
       position: relative;
+      transform: rotate(0.5deg);
     }
+    /* Скотч сверху (держит газетную вырезку на доске) */
     .det-clues::before {
       content: '';
-      position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
-      width: 80px; height: 10px;
-      background: rgba(200,150,12,.35);
+      position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+      width: 90px; height: 12px;
+      background: var(--det-tape);
+      background-image: repeating-linear-gradient(
+        90deg, transparent, transparent 2px,
+        rgba(180,160,120,.25) 2px, rgba(180,160,120,.25) 4px
+      );
       border-radius: 1px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.15);
     }
+
+    /* Кофейное пятно (coffee ring stain из Image 3) */
+    .det-clues::after {
+      content: '';
+      position: absolute; bottom: 8px; right: 12px;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 5px solid var(--det-stain);
+      box-shadow:
+        0 0 0 2px rgba(107,79,40,.1),
+        inset 0 0 8px rgba(90,60,20,.08);
+      pointer-events: none;
+    }
+
     .det-clue-label {
       font-family: var(--det-font-body);
-      font-size: 13px; font-weight: normal;
-      color: var(--det-ink);
-      text-transform: uppercase; letter-spacing: .1em;
+      font-size: 11px; color: var(--det-ink);
+      text-transform: uppercase; letter-spacing: .14em;
       margin-bottom: 10px; display: block;
-      border-bottom: 2px solid rgba(44,26,14,.30);
+      border-bottom: 2px solid rgba(44,26,14,.25);
       padding-bottom: 6px;
     }
-    .det-clues ul {
-      list-style: none; padding: 0;
-      display: flex; flex-direction: column; gap: 7px;
-    }
+    .det-clues ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 7px; }
     .det-clues li {
       font-family: var(--det-font-body);
-      font-size: 14px; color: var(--det-ink-2);
-      line-height: 1.55; display: flex; align-items: baseline; gap: 8px;
+      font-size: 13px; color: var(--det-ink-2);
+      line-height: 1.6; display: flex; align-items: baseline; gap: 8px;
+      text-shadow: 0.3px 0.3px 0 rgba(0,0,0,.12);
     }
     .det-clues li::before {
       content: '▪';
-      color: var(--det-sealing); flex-shrink: 0; font-size: 10px;
+      color: var(--det-stamp-red); flex-shrink: 0; font-size: 10px;
     }
 
-    /* ── Вопрос следователя ── */
-    .det-choices { margin-bottom: 16px; }
+    /* ══ ВОПРОС СЛЕДОВАТЕЛЯ ══ */
+    .det-choices { margin-bottom: 18px; }
     .det-choice-label {
       font-family: var(--det-font-title);
       font-style: italic;
       font-size: 15px; color: var(--det-ink);
       margin-bottom: 14px; display: block;
-      line-height: 1.5;
+      line-height: 1.55;
     }
     .det-choice-label::before { content: '❓ '; }
 
-    /* кнопки — конверты/карточки */
+    /* ══ КНОПКИ ВАРИАНТОВ — конверты/улики с thumbtack ══ */
     .det-btn {
       display: block; width: 100%; text-align: left;
-      padding: 13px 18px 13px 44px; margin-bottom: 8px;
-      border-radius: 3px;
-      border: 1px solid rgba(44,26,14,.25);
-      background: linear-gradient(135deg, #fffef8 0%, #f7f0dc 100%);
+      padding: 13px 18px 13px 46px; margin-bottom: 9px;
+      border-radius: 1px;
+      border: 1px solid rgba(44,26,14,.28);
+      /* Карточка-улика из Image 5 (evidence card) */
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+        linear-gradient(135deg, var(--det-parchment) 0%, var(--det-parchment-aged) 100%);
       color: var(--det-ink-2);
       font-family: var(--det-font-body);
-      font-size: 14px;
+      font-size: 13px;
       cursor: pointer;
-      transition: all .18s ease;
-      line-height: 1.55;
-      box-shadow: 1px 2px 0 rgba(44,26,14,.1);
+      transition: all .2s ease;
+      line-height: 1.6;
+      box-shadow:
+        1px 2px 0 rgba(44,26,14,.12),
+        2px 3px 6px rgba(0,0,0,.12);
       position: relative;
+      /* Лёгкий наклон карточки */
+      transform: rotate(-0.4deg);
     }
+
+    /* Буква варианта — деревянный кубик из Image 1 */
     .det-btn::before {
       content: attr(data-letter);
       position: absolute; left: -1px; top: -1px;
-      width: 28px; height: 28px;
-      background: var(--det-wood);
-      color: var(--det-parchment);
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, var(--det-wood-red) 0%, #4a3728 100%);
+      color: var(--det-manila);
       font-family: var(--det-font-title);
-      font-size: 14px; font-style: italic;
+      font-size: 15px; font-style: italic;
       display: flex; align-items: center; justify-content: center;
-      border-radius: 3px 0 3px 0;
+      border-radius: 2px 0 4px 0;
+      box-shadow: 1px 1px 4px rgba(0,0,0,.3);
     }
     .det-btn::after {
       content: '→';
       position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-      color: rgba(44,26,14,.25); font-size: 16px;
+      color: rgba(44,26,14,.3); font-size: 16px;
       transition: right .15s ease, color .15s ease;
       font-family: sans-serif;
     }
@@ -768,94 +945,104 @@
     .det-btn.chosen-wrong::after { display: none; }
 
     .det-btn:hover {
-      background: linear-gradient(135deg, #fff9e8 0%, #f2e4be 100%);
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
+        linear-gradient(135deg, #fff9ec 0%, #f2e6c0 100%);
       border-color: var(--det-gold);
-      box-shadow: 2px 3px 0 rgba(44,26,14,.18);
-      transform: translateY(-1px);
+      box-shadow: 2px 3px 0 rgba(44,26,14,.18), 3px 4px 10px rgba(0,0,0,.18);
+      transform: rotate(0deg) translateY(-1px);
     }
 
     .det-btn.chosen-right {
       background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
       border-color: #388e3c; color: #1b5e20; pointer-events: none;
+      transform: rotate(0deg);
     }
-    .det-btn.chosen-right::before { background: #2e7d32; }
+    .det-btn.chosen-right::before { background: linear-gradient(135deg, #2e7d32, #1b5e20); }
 
     .det-btn.chosen-partial {
       background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
       border-color: #f9a825; color: #5d4037; pointer-events: none;
+      transform: rotate(0deg);
     }
-    .det-btn.chosen-partial::before { background: #f57f17; }
+    .det-btn.chosen-partial::before { background: linear-gradient(135deg, #f57f17, #e65100); }
 
     .det-btn.chosen-wrong {
       background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
       border-color: #c62828; color: #6d1a1a; pointer-events: none; opacity: .75;
+      transform: rotate(0deg);
     }
-    .det-btn.chosen-wrong::before { background: #b71c1c; }
+    .det-btn.chosen-wrong::before { background: linear-gradient(135deg, #b71c1c, #8b0000); }
     .det-btn.disabled { pointer-events: none; opacity: .3; }
 
-    /* ── Вердикт — телеграмма ── */
-    .det-reveal { margin-top: 16px; }
+    /* ══ ВЕРДИКТ — телеграмма ══ */
+    .det-reveal { margin-top: 18px; }
 
     .det-result-badge {
-      display: inline-flex; align-items: center; gap: 5px;
+      display: inline-flex; align-items: center; gap: 6px;
       font-family: var(--det-font-body);
-      font-size: 11px; font-weight: normal;
-      padding: 4px 12px; border-radius: 2px;
-      margin-bottom: 10px; letter-spacing: .07em;
-      text-transform: uppercase;
+      font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+      padding: 4px 14px; border-radius: 1px;
+      margin-bottom: 10px;
     }
     .det-result-badge.right   { background: #2e7d32; color: #e8f5e9; box-shadow: 0 2px 4px rgba(46,125,50,.3); }
     .det-result-badge.partial { background: #e65100; color: #fff8e1; box-shadow: 0 2px 4px rgba(230,81,0,.3); }
-    .det-result-badge.wrong   { background: var(--det-sealing); color: #fce4ec; box-shadow: 0 2px 4px rgba(139,26,26,.3); }
+    .det-result-badge.wrong   { background: var(--det-stamp-red); color: #fce4ec; box-shadow: 0 2px 4px rgba(139,26,26,.3); }
 
-    /* телеграмма */
+    /* Телеграмма/донесение */
     .det-story-continue {
-      background: #fffef5;
-      border: 1px dashed rgba(44,26,14,.25);
-      border-radius: 3px;
+      background: var(--det-parchment);
+      border: 1px dashed rgba(44,26,14,.28);
+      border-radius: 1px;
       padding: 16px 18px;
       position: relative;
+      box-shadow: 1px 2px 6px rgba(0,0,0,.1);
+      transform: rotate(0.3deg);
     }
     .det-story-continue::before {
       content: 'ДОНЕСЕНИЕ СЛЕДОВАТЕЛЯ';
       display: block;
       font-family: var(--det-font-body);
-      font-size: 10px; letter-spacing: .15em;
+      font-size: 9px; letter-spacing: .2em;
       color: var(--det-ink-faded);
       text-align: center;
-      margin-bottom: 12px;
-      padding-bottom: 10px;
+      margin-bottom: 12px; padding-bottom: 10px;
       border-bottom: 1px solid rgba(44,26,14,.15);
     }
     .det-story-continue p {
       font-family: var(--det-font-body);
-      font-size: 14px; color: var(--det-ink); line-height: 1.82;
+      font-size: 13px; color: var(--det-ink); line-height: 1.85;
       margin: 0 0 10px;
+      text-shadow: 0.4px 0.4px 0 rgba(0,0,0,.12);
     }
     .det-story-continue p:last-child { margin-bottom: 0; }
     .det-story-continue em {
       display: block;
-      font-family: var(--det-font-title);
-      font-style: italic;
-      color: var(--det-ink-2);
-      font-size: 14px; line-height: 1.7;
-      margin: 4px 0 10px 12px;
-      border-left: 2px solid var(--det-gold);
-      padding-left: 12px;
+      font-family: var(--det-font-title); font-style: italic;
+      color: var(--det-ink-2); font-size: 14px; line-height: 1.75;
+      margin: 5px 0 10px 14px;
+      border-left: 2px solid var(--det-gold); padding-left: 12px;
     }
 
-    /* мораль — сургучная печать внизу */
+    /* Мораль — печать сургучом внизу */
     .det-story-continue p.det-moral {
-      margin-top: 16px; padding: 14px 18px;
-      background: linear-gradient(135deg, #2c1a0e 0%, #3d2616 100%);
-      color: var(--det-parchment);
-      font-family: var(--det-font-title);
-      font-style: italic;
+      margin-top: 18px; padding: 14px 18px 14px 24px;
+      background: linear-gradient(135deg, var(--det-wood-red) 0%, #3d2616 100%);
+      color: var(--det-manila);
+      font-family: var(--det-font-title); font-style: italic;
       font-size: 14px; line-height: 1.65;
-      border-radius: 3px;
-      box-shadow: 0 3px 10px rgba(44,26,14,.35);
+      border-radius: 2px;
+      box-shadow: 0 3px 12px rgba(44,26,14,.4);
+      position: relative;
     }
     .det-story-continue p.det-moral::before { content: '🕯 '; }
+
+    /* ══ ВИНЬЕТИРОВАНИЕ СТРАНИЦЫ в детектив-режиме ══ */
+    body.detective-on .b-curriculum {
+      background:
+        radial-gradient(ellipse at center, transparent 55%, rgba(44,26,14,.08) 100%),
+        var(--c-bg-subtle);
+    }
 
     /* ══ OODA SECTION ══════════════════════════════════════════════════════════ */
     .b-ooda { background: var(--c-deep); color: #fff; }
@@ -1521,7 +1708,10 @@
 
 <!-- ══ CURRICULUM ═════════════════════════════════════════════════════════════════ -->
 <div class="det-mode-bar" id="detModeBar">
-  🔍 Режим детектива активирован — расследуй, собирай улики, делай выводы
+  <div class="det-mode-bar-inner">
+    🔍 Режим детектива активирован — расследуй, собирай улики, делай выводы
+  </div>
+  <span class="det-mode-bar-tape"></span>
 </div>
 <section class="b-curriculum" id="curriculum">
   <div class="container">
